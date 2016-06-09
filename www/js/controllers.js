@@ -462,8 +462,8 @@ angular.module('your_app_name.controllers', [])
 	};
 })
 
-.controller('WechatCtrl', function($scope){
-
+.controller('WechatCtrl', function($scope, db){
+	$scope.chats = db.chats;
 })
 
 ;

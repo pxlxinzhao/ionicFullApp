@@ -209,4 +209,21 @@ angular.module('your_app_name.factories', [])
   };
 })
 
+.factory('db', function(){
+  return {
+    chats:[
+      {
+        name:"Neil Patrick Harris",
+        message:"What\"s up? I got the tickets!",
+        con:"img/people/001.jpg"
+      },
+      {
+        name:"Megan Fox",
+        message:"See you at 7:00 pm, old place",
+        con:"img/people/002.jpg"
+      }
+    ]
+  }
+})
+
 ;
