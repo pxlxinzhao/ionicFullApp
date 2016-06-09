@@ -213,14 +213,59 @@ angular.module('your_app_name.factories', [])
   return {
     chats:[
       {
-        name:"Neil Patrick Harris",
-        message:"What\"s up? I got the tickets!",
-        con:"img/people/001.jpg"
+        name:"Mandi Gross",
+        message:"Quisque ornare nulla eu sem convallis pellentesque. Cras at sagittis augue. Nam bibendum dui sit amet ante.",
+        url:"img/people/001.jpg"
       },
       {
-        name:"Megan Fox",
-        message:"See you at 7:00 pm, old place",
-        con:"img/people/002.jpg"
+        name:"Netta Nobel",
+        message:"Donec eu nulla ut mi dignissim ornare. Curabitur maximus dui orci, quis semper mauris bibendum id. Aliquam.",
+        url:"img/people/002.jpg"
+      },
+      {
+        name:"Kassey Kawamura",
+        message:"Nullam magna tellus, iaculis hendrerit odio ac, ornare pretium libero. Donec dapibus, diam in egestas convallis, lorem.",
+        url:"img/people/003.jpg"
+      },
+      {
+        name:"Betty Candaele",
+        message:"Vivamus pulvinar ipsum non mauris dapibus, eget vestibulum sem lacinia. Duis porta nisl ac euismod congue. Sed turpis nisl, egestas eget sapien at, imperdiet lobortis.",
+        url:"img/people/004.jpg"
+      },
+      {
+        name:"Perle Gannon",
+        message:"Dictum feugiat consequat erat senectus primis nostra hac nec justo curabitur ante, purus interdum risus luctus nibh consectetur scelerisque nulla porta.",
+        url:"img/people/005.jpg"
+      },
+      {
+        name:"Brietta Fenske",
+        message:"Cras rutrum augue blandit vel quisque urna aenean ornare duis tortor curae, nulla lacinia at iaculis habitant lobortis gravida ipsum viverra hac a pharetra augue duis ante nec sed lobortis curae volutpat.",
+        url:"img/people/006.jpg"
+      },
+      {
+        name:"Holly Salvatore",
+        message:"Fringilla euismod volutpat fermentum mauris ut ultrices massa, hendrerit litora augue mauris vivamus vel quam et, ullamcorper per mattis etiam felis faucibus.",
+        url:"img/people/007.jpg"
+      },
+      {
+        name:"Lilas Pierpont",
+        message:"At amet lorem urna magna sociosqu vivamus sociosqu, posuere class fringilla urna pulvinar mattis, ultricies odio non aliquam sodales primis.",
+        url:"img/people/008.jpg"
+      },
+      {
+        name:"Valina Policar",
+        message:"Suspendisse lacinia eros lacinia condimentum tortor phasellus hac urna tristique auctor, malesuada sit quam fusce mollis accumsan arcu curae consectetur vehicula, nostra lobortis et pellentesque cubilia eros posuere aliquam tristique.",
+        url:"img/people/009.jpg"
+      },
+      {
+        name:"Godiva Daldalian",
+        message:"Sapien non etiam egestas potenti elementum tortor tempus per est quisque sed vestibulum tempus hac metus massa, praesent tortor purus aliquam gravida amet scelerisque nullam odio habitasse mauris dictum ultricies nam.",
+        url:"img/people/010.jpg"
+      },
+      {
+        name:"Nakashima Yuko",
+        message:"Nulla consequat facilisis proin sed ligula libero gravida ultrices, sollicitudin at in tincidunt eget suscipit placerat, enim sociosqu enim libero semper ac sed.",
+        url:"img/people/011.jpg"
       }
     ]
   }

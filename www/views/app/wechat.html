@@ -1,16 +1,16 @@
 <ion-view class="wechat-view">
-
   <ion-content>
-    <div class="list layouts-functionalities">
-      <a class="item item-icon-left">
-        <!--<i class="icon ion-happy-outline"></i>-->
-        <img class="wechat-user-icon" src="img/people/001.jpg" />
+    <div class="list layouts-functionalities chats-container">
+      <a ng-repeat="chat in chats" class="item item-icon-left">
+        <img class="wechat-user-icon" ng-src="{{chat.url}}" />
         <div>
-          <span class="title">Patrick Neil Harrison</span>
-          <p class="description">Hi, this is patrick</p>
+          <span class="title">{{chat.name}}</span>
+          <p class="description">{{chat.message}}</p>
         </div>
       </a>
+        <div class="chats-place-holder"></div>
     </div>
+
   </ion-content>
 
   <ion-tabs class="tabs-assertive tabs-icon-top">
