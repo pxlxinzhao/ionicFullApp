@@ -1,15 +1,57 @@
-.chats-container{
-    .wechat-user-icon {
-        position: absolute;
-        width: 38px;
-        left: 9px;
-    }
+$green-color: #33cd5f;
+$green-color-deep: #28a54c;
 
-    .chats-place-holder {
-        height: 50px;
-        width: 100%;
+.wechat-view{
+    .chats-container{
+        .chats-place-holder {
+            height: 50px;
+            width: 100%;
+        }
     }
 }
+
+
+
+.chat-view {
+    .bar.chat-bar {
+        padding: 0px;
+        height: 50px;
+    }
+
+    .list.chat-list {
+        width: 100%;
+        padding: 0px;
+    }
+
+    .chat-entry {
+        margin-left: 54px;
+        padding: 10px;
+
+        .chat-chatbox{
+            background-color: $green-color;
+        }
+
+        &.chat-right {
+            margin-left: auto;
+            margin-right: 54px;
+        }
+    }
+
+}
+
+.wechat-user-icon {
+    position: absolute;
+    width: 38px;
+    left: 9px;
+
+    &.chat-right{
+        left: auto;
+        right: 9px;
+    }
+}
+
+
+
 
 
 

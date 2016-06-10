@@ -466,4 +466,26 @@ angular.module('your_app_name.controllers', [])
 	$scope.chats = db.chats;
 })
 
+.controller('ChatCtrl', function($scope, db){
+	var messages = _.filter(db.messages, function(record){
+		return (record.senderId == 'MandiGross' && record.receiverId == 'PatrickPu')
+		|| (record.receiverId == 'MandiGross' && record.senderId == 'PatrickPu')
+	});
+
+	$scope.messages = messages;
+
+	$scope.getPhotoUrl = function(message){
+		switch (message.senderId) {
+			case 'MandiGross':
+				return 'img/people/001.jpg';
+			case 'PatrickPu':
+				return 'img/people/patrickpu.jpg';
+		}
+	}
+
+		$scope.isRight = function(message){
+			return message.senderId == 'PatrickPu';
+		}
+})
+
 ;

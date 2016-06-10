@@ -286,6 +286,16 @@ angular.module('your_app_name', [
     }
   })
 
+  .state('app.chat', {
+        url: "/chat",
+        views: {
+          'menuContent': {
+            templateUrl: "views/app/chat.html",
+            controller: 'ChatCtrl'
+          }
+        }
+  })
+
 ;
 
   // if none of the above states are matched, use this as the fallback
