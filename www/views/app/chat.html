@@ -2,7 +2,9 @@
     <ion-content>
         <div ng-repeat="message in messages" ng-class="{'chat-entry': 1, 'chat-right': isRight(message)}">
             <img ng-src="{{getPhotoUrl(message)}}" ng-class="{'wechat-user-icon': 1, 'chat-right': isRight(message)}"/>
-            <p class="chat-chatbox">{{message.message}}</p>
+            <div class="chat-chatbox-container">
+                <p class="chat-chatbox">{{message.message}}</p>
+            </div>
         </div>
     </ion-content>
 
@@ -11,9 +13,9 @@
 
             <div class="item item-input-inset">
                 <label class="item-input-wrapper">
-                    <input type="text" placeholder="Message">
+                    <input class="chat-message" type="text" placeholder="Message" ng-model="message">
                 </label>
-                <button class="button button-small">
+                <button class="button button-small" ng-click="sendMessage()">
                     Send
                 </button>
             </div>

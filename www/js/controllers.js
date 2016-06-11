@@ -472,6 +472,7 @@ angular.module('your_app_name.controllers', [])
 		|| (record.receiverId == 'MandiGross' && record.senderId == 'PatrickPu')
 	});
 
+	$scope.message = "";
 	$scope.messages = messages;
 
 	$scope.getPhotoUrl = function(message){
@@ -483,9 +484,18 @@ angular.module('your_app_name.controllers', [])
 		}
 	}
 
-		$scope.isRight = function(message){
-			return message.senderId == 'PatrickPu';
-		}
+	$scope.isRight = function(message){
+		return message.senderId == 'PatrickPu';
+	}
+
+	$scope.sendMessage = function(){
+		$scope.messages.push({
+			senderId: "PatrickPu",
+			receiverId: "MandiGross",
+			message: $scope.message,
+			timestamp: new Date().getTime()
+		});
+	}
 })
 
 ;
