@@ -293,6 +293,19 @@ angular.module('your_app_name', [
             templateUrl: "views/app/chat.html",
             controller: 'ChatCtrl'
           }
+        },
+        params: {
+          senderId: null
+        }
+  })
+
+  .state('app.me', {
+        url: "/me",
+        views: {
+          'menuContent': {
+            templateUrl: "views/app/me.html",
+            controller: 'MeCtrl'
+          }
         }
   })
 

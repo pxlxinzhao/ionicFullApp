@@ -24,8 +24,9 @@ $green-color-deep: #28a54c;
     }
 
     .chat-entry {
+        margin-top: 10px;
         margin-left: 54px;
-        padding: 10px;
+        padding: 5px;
 
         .chat-chatbox{
             background-color: $green-color;

@@ -466,10 +466,13 @@ angular.module('your_app_name.controllers', [])
 	$scope.chats = db.chats;
 })
 
-.controller('ChatCtrl', function($scope, db){
+.controller('ChatCtrl', function($scope, db, $stateParams){
+	var senderId = $stateParams.senderId;
+	var receiverId = 'Patrick Pu'
+
 	var messages = _.filter(db.messages, function(record){
-		return (record.senderId == 'MandiGross' && record.receiverId == 'PatrickPu')
-		|| (record.receiverId == 'MandiGross' && record.senderId == 'PatrickPu')
+		return (record.senderId == senderId && record.receiverId == receiverId)
+		|| (record.receiverId == senderId && record.senderId == receiverId)
 	});
 
 	$scope.message = "";
@@ -477,24 +480,26 @@ angular.module('your_app_name.controllers', [])
 
 	$scope.getPhotoUrl = function(message){
 		switch (message.senderId) {
-			case 'MandiGross':
+			case senderId:
 				return 'img/people/001.jpg';
-			case 'PatrickPu':
+			case receiverId:
 				return 'img/people/patrickpu.jpg';
 		}
 	}
 
 	$scope.isRight = function(message){
-		return message.senderId == 'PatrickPu';
+		return message.senderId == receiverId;
 	}
 
 	$scope.sendMessage = function(){
 		$scope.messages.push({
-			senderId: "PatrickPu",
-			receiverId: "MandiGross",
+			senderId: receiverId,
+			receiverId: senderId,
 			message: $scope.message,
 			timestamp: new Date().getTime()
 		});
+
+		$scope.message = "";
 	}
 })
 

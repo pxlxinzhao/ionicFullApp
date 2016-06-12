@@ -271,20 +271,20 @@ angular.module('your_app_name.factories', [])
 
     messages: [
       {
-        senderId: "MandiGross",
-        receiverId: "PatrickPu",
+        senderId: "Mandi Gross",
+        receiverId: "Patrick Pu",
         message: "Hello, how are you?",
         timestamp: 1465588012
       },
       {
-        senderId: "PatrickPu",
-        receiverId: "MandiGross",
+        senderId: "Patrick Pu",
+        receiverId: "Mandi Gross",
         message: "I am hungry, go grab a lunch?",
         timestamp: 1465688012
       },
       {
-        senderId: "MandiGross",
-        receiverId: "PatrickPu",
+        senderId: "Mandi Gross",
+        receiverId: "Patrick Pu",
         message: "Why not? Let's go",
         timestamp: 1465788012
       }
