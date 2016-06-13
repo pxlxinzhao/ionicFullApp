@@ -462,7 +462,12 @@ angular.module('your_app_name.controllers', [])
 	};
 })
 
+.controller('WeixinCtrl', function(){
+
+	})
+
 .controller('WechatCtrl', function($scope, db){
+		console.log('Entering wechat');
 	$scope.chats = db.chats;
 })
 
@@ -502,5 +507,9 @@ angular.module('your_app_name.controllers', [])
 		$scope.message = "";
 	}
 })
+
+.controller('MeCtrl', function($scope){
+
+	})
 
 ;

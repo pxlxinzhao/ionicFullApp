@@ -276,7 +276,17 @@ angular.module('your_app_name', [
     }
   })
 
-  .state('app.wechat', {
+  .state('app.weixin', {
+      url: "/weixin",
+      views: {
+        'menuContent': {
+          templateUrl: "views/app/weixin.html",
+          controller: 'WeixinCtrl'
+        }
+      }
+  })
+
+  .state('app.weixin.wechat', {
     url: "/wechat",
     views: {
       'menuContent': {
@@ -286,7 +296,7 @@ angular.module('your_app_name', [
     }
   })
 
-  .state('app.chat', {
+  .state('app.weixin.chat', {
         url: "/chat",
         views: {
           'menuContent': {
@@ -299,7 +309,7 @@ angular.module('your_app_name', [
         }
   })
 
-  .state('app.me', {
+  .state('app.weixin.me', {
         url: "/me",
         views: {
           'menuContent': {
