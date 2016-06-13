@@ -276,6 +276,19 @@ angular.module('your_app_name', [
     }
   })
 
+  .state('app.chat', {
+    url: "/chat",
+    views: {
+      'tabContent': {
+        templateUrl: "views/app/chat.html",
+        controller: 'ChatCtrl'
+      }
+    },
+    params: {
+      senderId: null
+    }
+  })
+
   .state('app.weixin', {
       url: "/weixin",
       abstract: true,
@@ -295,19 +308,6 @@ angular.module('your_app_name', [
         controller: 'WechatCtrl'
       }
     }
-  })
-
-  .state('app.weixin.chat', {
-        url: "/chat",
-        views: {
-          'tabContent': {
-            templateUrl: "views/app/chat.html",
-            controller: 'ChatCtrl'
-          }
-        },
-        params: {
-          senderId: null
-        }
   })
 
   .state('app.weixin.me', {

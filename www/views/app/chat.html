@@ -1,5 +1,10 @@
 <ion-view class="chat-view">
     <ion-content>
+        <div>
+            <i class="ion-arrow-left-c"></i> Back
+        </div>
+
+
         <div ng-repeat="message in messages" ng-class="{'chat-entry': 1, 'chat-right': isRight(message)}">
             <img ng-src="{{getPhotoUrl(message)}}" ng-class="{'wechat-user-icon': 1, 'chat-right': isRight(message)}"/>
             <div class="chat-chatbox-container">
