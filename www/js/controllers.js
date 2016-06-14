@@ -462,9 +462,15 @@ angular.module('your_app_name.controllers', [])
 	};
 })
 
-.controller('WeixinCtrl', function(){
+.controller('WeixinCtrl', function($scope, $state){
+	$state.go("app.weixin.wechat");
 
-	})
+	$scope.$on( "$ionicView.enter", function( scopes, states ) {
+		if( states.fromCache && states.stateName == "app.weixin" ) {
+			$state.go("app.weixin.wechat");
+		}
+	});
+})
 
 .controller('WechatCtrl', function($scope, db){
 		console.log('Entering wechat');

@@ -279,7 +279,7 @@ angular.module('your_app_name', [
   .state('app.chat', {
     url: "/chat",
     views: {
-      'tabContent': {
+      'menuContent': {
         templateUrl: "views/app/chat.html",
         controller: 'ChatCtrl'
       }
@@ -291,7 +291,6 @@ angular.module('your_app_name', [
 
   .state('app.weixin', {
       url: "/weixin",
-      abstract: true,
       views: {
         'menuContent': {
           templateUrl: "views/app/weixin.html",
