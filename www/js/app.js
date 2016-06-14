@@ -320,6 +320,16 @@ angular.module('your_app_name', [
     }
   })
 
+  .state('app.weixin.contact', {
+    url: "/contact",
+    views: {
+      'tabContent': {
+        templateUrl: "views/app/contact.html",
+        controller: 'ContactCtrl'
+      }
+    }
+  })
+
   .state('app.weixin.me', {
         url: "/me",
         views: {

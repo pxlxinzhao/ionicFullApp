@@ -1,15 +1,16 @@
 <ion-view class="wechat-view">
   <ion-content>
     <div class="list layouts-functionalities chats-container">
-      <a ng-repeat="chat in chats" class="item item-icon-left" ui-sref="app.chat({senderId: chat.name})">
+      <a class="item item-icon-left" ui-sref="app.chat({senderId: chat.name})">
         <img class="wechat-user-icon" ng-src="{{chat.url}}" />
         <div>
           <span class="title">{{chat.name}}</span>
-          <p class="description">{{chat.message}}</p>
+          <p class="description">{{message.message}}</p>
         </div>
       </a>
-        <div class="chats-place-holder"></div>
+      <div class="chats-place-holder"></div>
     </div>
 
   </ion-content>
+
 </ion-view>

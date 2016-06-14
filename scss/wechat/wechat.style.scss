@@ -2,7 +2,7 @@ $green-color: #33cd5f;
 $green-color-deep: #28a54c;
 $nav-offset-padding: 0px;
 
-.wechat-view{
+.contact-view{
     ion-content {
         padding-top: $nav-offset-padding;
     }
@@ -70,7 +70,12 @@ $nav-offset-padding: 0px;
 .me-view {
     ion-content {
         padding-top: $nav-offset-padding;
+
+        .empty-div {
+            height: 49px;
+        }
     }
+
 }
 
 

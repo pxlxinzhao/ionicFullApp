@@ -467,7 +467,16 @@ angular.module('your_app_name.controllers', [])
 })
 
 .controller('WechatCtrl', function($scope, db){
-	$scope.chats = db.chats;
+	$scope.chat = db.chats[0];
+
+	var senderId = 'Mandi Gross';
+	var receiverId = 'Patrick Pu';
+
+	var messages = _.filter(db.messages, function(record){
+		return (record.senderId == senderId && record.receiverId == receiverId)
+			|| (record.receiverId == senderId && record.senderId == receiverId)
+	});
+	$scope.message = messages[messages.length - 1];
 })
 
 .controller('ChatCtrl', function($scope, db, $stateParams){
@@ -507,8 +516,48 @@ angular.module('your_app_name.controllers', [])
 	}
 })
 
-.controller('MeCtrl', function($scope){
+.controller('MeCtrl', function($scope, $ionicActionSheet, $state) {
+		$scope.airplaneMode = true;
+		$scope.wifi = false;
+		$scope.bluetooth = true;
+		$scope.personalHotspot = true;
 
+		$scope.checkOpt1 = true;
+		$scope.checkOpt2 = true;
+		$scope.checkOpt3 = false;
+
+		$scope.radioChoice = 'B';
+
+		// Triggered on a the logOut button click
+		$scope.showLogOutMenu = function() {
+
+			// Show the action sheet
+			var hideSheet = $ionicActionSheet.show({
+				//Here you can add some more buttons
+				// buttons: [
+				// { text: '<b>Share</b> This' },
+				// { text: 'Move' }
+				// ],
+				destructiveText: 'Logout',
+				titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+				cancelText: 'Cancel',
+				cancel: function() {
+					// add cancel code..
+				},
+				buttonClicked: function(index) {
+					//Called when one of the non-destructive buttons is clicked,
+					//with the index of the button that was clicked and the button object.
+					//Return true to close the action sheet, or false to keep it opened.
+					return true;
+				},
+				destructiveButtonClicked: function(){
+					//Called when the destructive button is clicked.
+					//Return true to close the action sheet, or false to keep it opened.
+					$state.go('auth.walkthrough');
+				}
+			});
+
+		};
 	})
 
 .controller('WeixinProxyCtrl', function($scope, $state, db){
@@ -518,6 +567,12 @@ angular.module('your_app_name.controllers', [])
 			if( states.stateName == "app.weixinProxy" ) {
 				$state.go("app.weixin.wechat");
 			}
+		});
+	})
+
+.controller('ContactCtrl', function ($scope, db) {
+		$scope.contacts = _.sortBy(db.chats, function(obj){
+			return obj.name;
 		});
 	})
 ;
