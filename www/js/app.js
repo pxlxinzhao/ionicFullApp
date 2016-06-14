@@ -289,8 +289,19 @@ angular.module('your_app_name', [
     }
   })
 
+  .state('app.weixinProxy', {
+    url: "/weixinProxy",
+    views: {
+      'menuContent': {
+        templateUrl: "views/app/weixin.html",
+        controller: 'WeixinProxyCtrl'
+      }
+    }
+  })
+
   .state('app.weixin', {
       url: "/weixin",
+      abstract: true,
       views: {
         'menuContent': {
           templateUrl: "views/app/weixin.html",

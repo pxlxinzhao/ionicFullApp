@@ -463,17 +463,10 @@ angular.module('your_app_name.controllers', [])
 })
 
 .controller('WeixinCtrl', function($scope, $state){
-	$state.go("app.weixin.wechat");
 
-	$scope.$on( "$ionicView.enter", function( scopes, states ) {
-		if( states.fromCache && states.stateName == "app.weixin" ) {
-			$state.go("app.weixin.wechat");
-		}
-	});
 })
 
 .controller('WechatCtrl', function($scope, db){
-		console.log('Entering wechat');
 	$scope.chats = db.chats;
 })
 
@@ -518,4 +511,13 @@ angular.module('your_app_name.controllers', [])
 
 	})
 
+.controller('WeixinProxyCtrl', function($scope, $state, db){
+		$state.go("app.weixin.wechat");
+
+		$scope.$on( "$ionicView.enter", function( scopes, states ) {
+			if( states.stateName == "app.weixinProxy" ) {
+				$state.go("app.weixin.wechat");
+			}
+		});
+	})
 ;
