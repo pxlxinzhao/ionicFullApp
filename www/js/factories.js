@@ -209,6 +209,14 @@ angular.module('your_app_name.factories', [])
   };
 })
 
+.factory('helper', function () {
+      return {
+        createChatRoomId: function(){
+          return _.sortBy(arguments, function(x){ return x}).join(' ').replace(/\s/g, '');
+        }
+      }
+    })
+
 .factory('db', function(){
   return {
     chats:[

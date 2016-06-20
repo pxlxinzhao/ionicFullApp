@@ -462,7 +462,7 @@ angular.module('your_app_name.controllers', [])
 
     })
 
-    .controller('WechatCtrl', function ($scope, db) {
+    .controller('WechatCtrl', function ($rootScope, $scope, db) {
         $scope.chat = db.chats[0];
 
         var senderId = 'Mandi Gross';
@@ -473,9 +473,19 @@ angular.module('your_app_name.controllers', [])
                 || (record.receiverId == senderId && record.senderId == receiverId)
         });
         $scope.message = messages[messages.length - 1];
+
+        //socket stuff goes here
+        if (!$rootScope.socket){
+            var socket = io('https://wechat-pxlxinzhao.c9users.io:8080');
+
+            $rootScope.socket = socket;
+            socket.on('connect', function(){
+                console.log('successfully connected');
+            })
+        }
     })
 
-    .controller('ChatCtrl', function ($scope, db, $stateParams) {
+    .controller('ChatCtrl', function ($scope, db, $stateParams, helper, $rootScope) {
         var senderId = $stateParams.senderId;
         var receiverId = 'Patrick Pu'
 
@@ -501,15 +511,33 @@ angular.module('your_app_name.controllers', [])
         }
 
         $scope.sendMessage = function () {
-            $scope.messages.push({
-                senderId: receiverId,
-                receiverId: senderId,
-                message: $scope.message,
-                timestamp: new Date().getTime()
-            });
+            console.log('sending message')
 
-            $scope.message = "";
+            if($rootScope.socket){
+                $rootScope.socket.emit('message',
+                    {
+                        senderId: senderId,
+                        receiverId: receiverId,
+                        message: $scope.message,
+                        time: new Date().getTime()
+                    }
+                )
+
+                $rootScope.socket.on('messageSuccess', function () {
+                    $scope.messages.push({
+                        senderId: receiverId,
+                        receiverId: senderId,
+                        message: $scope.message,
+                        timestamp: new Date().getTime()
+                    });
+                    $scope.message = "";
+                    $scope.$apply();
+                })
+            }else{
+                console.error('Unable to connect to the chat server');
+            }
         }
+
     })
 
     .controller('MeCtrl', function ($scope, $ionicActionSheet, $state) {
