@@ -11,6 +11,8 @@ angular.module('underscore', [])
 angular.module('your_app_name', [
     'ionic',
     'angularMoment',
+    //'ngCookies',
+    //'csrf-cross-domain',
     'your_app_name.controllers',
     'your_app_name.directives',
     'your_app_name.filters',
@@ -25,6 +27,7 @@ angular.module('your_app_name', [
     'slugifier',
     'ionic.contrib.ui.tinderCards',
     'youtube-embed'
+
 ])
 
     .run(function ($ionicPlatform, PushNotificationsService, $rootScope, $ionicConfig, $timeout) {

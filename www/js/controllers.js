@@ -475,8 +475,12 @@ angular.module('your_app_name.controllers', [])
         $scope.message = messages[messages.length - 1];
 
         //socket stuff goes here
+        if (!$rootScope.baseUrl){
+            $rootScope.baseUrl = 'https://wechat-pxlxinzhao.c9users.io:8080';
+        }
+
         if (!$rootScope.socket){
-            var socket = io('https://wechat-pxlxinzhao.c9users.io:8080');
+            var socket = io($rootScope.baseUrl);
 
             $rootScope.socket = socket;
             socket.on('connect', function(){
@@ -485,7 +489,7 @@ angular.module('your_app_name.controllers', [])
         }
     })
 
-    .controller('ChatCtrl', function ($scope, db, $stateParams, helper, $rootScope) {
+    .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper) {
         var senderId = $stateParams.senderId;
         var receiverId = 'Patrick Pu'
 
@@ -493,6 +497,23 @@ angular.module('your_app_name.controllers', [])
             return (record.senderId == senderId && record.receiverId == receiverId)
                 || (record.receiverId == senderId && record.senderId == receiverId)
         });
+
+        var callback = function(){
+            console.log('in json callback');
+        }
+
+        $http.jsonp($rootScope.baseUrl + '/messages',
+            {
+                params: {
+                    senderId: senderId,
+                    receiverId: receiverId,
+                    callback: 'JSON_CALLBACK'
+                }
+            }).success(function(response){
+                console.log('getting response: ', response);
+            }).error(function(error){
+                console.log('getting error: ', error);
+            })
 
         $scope.message = "";
         $scope.messages = messages;

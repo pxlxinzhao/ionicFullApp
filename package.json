@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "ionFullApp: An Ionic starter project",
   "dependencies": {
+    "angular-cookies": "^1.5.7",
     "async": "^1.4.0",
     "bower": "^1.3.3",
     "gulp": "^3.5.6",
