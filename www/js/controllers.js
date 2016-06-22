@@ -490,13 +490,13 @@ angular.module('your_app_name.controllers', [])
     })
 
     .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper) {
-        var senderId = $stateParams.senderId;
-        var receiverId = 'Patrick Pu'
+        var other = $stateParams.senderId;
+        var me = 'Patrick Pu';
 
-        var messages = _.filter(db.messages, function (record) {
-            return (record.senderId == senderId && record.receiverId == receiverId)
-                || (record.receiverId == senderId && record.senderId == receiverId)
-        });
+        //var messages = _.filter(db.messages, function (record) {
+        //    return (record.senderId == senderId && record.receiverId == receiverId)
+        //        || (record.receiverId == senderId && record.senderId == receiverId)
+        //});
 
         var callback = function(){
             console.log('in json callback');
@@ -505,30 +505,33 @@ angular.module('your_app_name.controllers', [])
         $http.jsonp($rootScope.baseUrl + '/messages',
             {
                 params: {
-                    senderId: senderId,
-                    receiverId: receiverId,
+                    senderId: other,
+                    receiverId: me,
+                    // this param is essential
                     callback: 'JSON_CALLBACK'
                 }
-            }).success(function(response){
-                console.log('getting response: ', response);
+            }).success(function(messages){
+                console.log('getting messages: ', messages);
+                $scope.messages = messages;
+                //$scope.$apply();
             }).error(function(error){
                 console.log('getting error: ', error);
             })
 
         $scope.message = "";
-        $scope.messages = messages;
+        //$scope.messages = messages;
 
         $scope.getPhotoUrl = function (message) {
             switch (message.senderId) {
-                case senderId:
+                case other:
                     return 'img/people/001.jpg';
-                case receiverId:
+                case me:
                     return 'img/people/patrickpu.jpg';
             }
         }
 
         $scope.isRight = function (message) {
-            return message.senderId == receiverId;
+            return message.senderId == me;
         }
 
         $scope.sendMessage = function () {
@@ -537,8 +540,8 @@ angular.module('your_app_name.controllers', [])
             if($rootScope.socket){
                 $rootScope.socket.emit('message',
                     {
-                        senderId: senderId,
-                        receiverId: receiverId,
+                        senderId: me,
+                        receiverId: other,
                         message: $scope.message,
                         time: new Date().getTime()
                     }
@@ -546,8 +549,8 @@ angular.module('your_app_name.controllers', [])
 
                 $rootScope.socket.on('messageSuccess', function () {
                     $scope.messages.push({
-                        senderId: receiverId,
-                        receiverId: senderId,
+                        senderId: me,
+                        receiverId: other,
                         message: $scope.message,
                         timestamp: new Date().getTime()
                     });
