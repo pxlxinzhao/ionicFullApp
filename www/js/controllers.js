@@ -5,27 +5,45 @@ angular.module('your_app_name.controllers', [])
     })
 
 // APP
-    .controller('AppCtrl', function ($scope, $ionicConfig) {
+    .controller('AppCtrl', function ($rootScope, $scope, $ionicConfig) {
+        $scope.username = $rootScope.user.email;
+        $scope.imageUrl = 'img/people/blank.jpg';
 
+        console.log('    $scope.username',  $scope.username);
+
+        if ($scope.username == 'Patrick Pu'){
+            $scope.imageUrl = 'img/people/patrickpu.jpg';
+        }else if($scope.username == 'Mandi Gross'){
+            $scope.imageUrl = 'img/people/001.jpg';
+        }
     })
 
 //LOGIN
-    .controller('LoginCtrl', function ($scope, $state, $templateCache, $q, $rootScope) {
-        $scope.doLogIn = function () {
-            $state.go('app.weixinProxy');
-        };
-
+    .controller('LoginCtrl', function ($http, $rootScope, $scope, $state, $templateCache, $q, $rootScope) {
         $scope.user = {};
 
-        $scope.user.email = "john@doe.com";
-        $scope.user.pin = "12345";
+        $http.get('setting/user-preference.json').success(function (data) {
 
-        // We need this for the form validation
-        $scope.selected_tab = "";
+            $scope.user.email = data.username;
+            $scope.user.pin = "12345";
 
-        $scope.$on('my-tabs-changed', function (event, data) {
-            $scope.selected_tab = data.title;
-        });
+            // We need this for the form validation
+            $scope.selected_tab = "";
+
+            $scope.$on('my-tabs-changed', function (event, data) {
+                $scope.selected_tab = data.title;
+            });
+
+            $scope.doLogIn = function () {
+                if ($scope.user && $scope.user.email && $scope.user.email.length > 0) {
+                    $rootScope.user = $scope.user;
+                    $state.go('app.weixinProxy');
+                }else{
+                    console.info('username has to be longer than 3 letters', $scope.user);
+                }
+            };
+        })
+
 
     })
 
