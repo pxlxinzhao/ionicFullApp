@@ -462,7 +462,7 @@ angular.module('your_app_name.controllers', [])
 
     })
 
-    .controller('WechatCtrl', function ($rootScope, $scope, db) {
+    .controller('WechatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL) {
         $scope.chat = db.chats[0];
 
         var senderId = 'Mandi Gross';
@@ -476,7 +476,7 @@ angular.module('your_app_name.controllers', [])
 
         //socket stuff goes here
         if (!$rootScope.baseUrl){
-            $rootScope.baseUrl = 'https://wechat-pxlxinzhao.c9users.io:8080';
+            $rootScope.baseUrl = CHAT_SERVER_URL;
         }
 
         if (!$rootScope.socket){
