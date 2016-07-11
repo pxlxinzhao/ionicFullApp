@@ -4,58 +4,22 @@ angular.module('your_app_name.controllers', [])
 
     })
 
-// APP
     .controller('AppCtrl', function ($rootScope, $scope, $ionicConfig) {
-        $scope.username = $rootScope.user.email;
+        /**
+         * not handling images for now, just use default
+         * @type {string}
+         */
+
+        //$scope.username = $rootScope.user.email;
         $scope.imageUrl = 'img/people/blank.jpg';
 
-        console.log('    $scope.username',  $scope.username);
-
-        if ($scope.username == 'Patrick Pu'){
-            $scope.imageUrl = 'img/people/patrickpu.jpg';
-        }else if($scope.username == 'Mandi Gross'){
-            $scope.imageUrl = 'img/people/001.jpg';
-        }
+        //if ($scope.username == 'Patrick Pu'){
+        //    $scope.imageUrl = 'img/people/patrickpu.jpg';
+        //}else if($scope.username == 'Mandi Gross'){
+        //    $scope.imageUrl = 'img/people/001.jpg';
+        //}
     })
 
-//LOGIN
-    .controller('LoginCtrl', function ($http, $rootScope, $scope, $state, $templateCache, $q, $rootScope) {
-        $scope.user = {};
-
-        $http.get('setting/user-preference.json').success(function (data) {
-
-            $scope.user.email = data.username;
-            $scope.user.pin = "12345";
-
-            // We need this for the form validation
-            $scope.selected_tab = "";
-
-            $scope.$on('my-tabs-changed', function (event, data) {
-                $scope.selected_tab = data.title;
-            });
-
-            $scope.doLogIn = function () {
-                if ($scope.user && $scope.user.email && $scope.user.email.length > 0) {
-                    $rootScope.user = $scope.user;
-                    $state.go('app.weixinProxy');
-                }else{
-                    console.info('username has to be longer than 3 letters', $scope.user);
-                }
-            };
-        })
-
-
-    })
-
-    .controller('SignupCtrl', function ($scope, $state) {
-        $scope.user = {};
-
-        $scope.user.email = "john@doe.com";
-
-        $scope.doSignUp = function () {
-            $state.go('app.weixinProxy');
-        };
-    })
 
     .controller('ForgotPasswordCtrl', function ($scope, $state) {
         $scope.recoverPassword = function () {
@@ -477,108 +441,6 @@ angular.module('your_app_name.controllers', [])
     })
 
     .controller('WeixinCtrl', function ($scope, $state) {
-
-    })
-
-    .controller('WechatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL) {
-        $scope.chat = db.chats[0];
-
-        var senderId = 'Mandi Gross';
-        var receiverId = 'Patrick Pu';
-
-        var messages = _.filter(db.messages, function (record) {
-            return (record.senderId == senderId && record.receiverId == receiverId)
-                || (record.receiverId == senderId && record.senderId == receiverId)
-        });
-        $scope.message = messages[messages.length - 1];
-
-        //socket stuff goes here
-        if (!$rootScope.baseUrl){
-            $rootScope.baseUrl = CHAT_SERVER_URL;
-        }
-
-        if (!$rootScope.socket){
-            var socket = io($rootScope.baseUrl);
-
-            $rootScope.socket = socket;
-            socket.on('connect', function(){
-                console.log('successfully connected');
-            })
-        }
-    })
-
-    .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper) {
-        var other = $stateParams.senderId;
-        var me = 'Patrick Pu';
-
-        //var messages = _.filter(db.messages, function (record) {
-        //    return (record.senderId == senderId && record.receiverId == receiverId)
-        //        || (record.receiverId == senderId && record.senderId == receiverId)
-        //});
-
-        var callback = function(){
-            console.log('in json callback');
-        }
-
-        $http.jsonp($rootScope.baseUrl + '/messages',
-            {
-                params: {
-                    senderId: other,
-                    receiverId: me,
-                    // this param is essential
-                    callback: 'JSON_CALLBACK'
-                }
-            }).success(function(messages){
-                console.log('getting messages: ', messages);
-                $scope.messages = messages;
-                //$scope.$apply();
-            }).error(function(error){
-                console.log('getting error: ', error);
-            })
-
-        $scope.message = "";
-        //$scope.messages = messages;
-
-        $scope.getPhotoUrl = function (message) {
-            switch (message.senderId) {
-                case other:
-                    return 'img/people/001.jpg';
-                case me:
-                    return 'img/people/patrickpu.jpg';
-            }
-        }
-
-        $scope.isRight = function (message) {
-            return message.senderId == me;
-        }
-
-        $scope.sendMessage = function () {
-            console.log('sending message')
-
-            if($rootScope.socket){
-                $rootScope.socket.emit('message',
-                    {
-                        senderId: me,
-                        receiverId: other,
-                        message: $scope.message,
-                        time: new Date().getTime()
-                    }
-                )
-
-                $rootScope.socket.on('messageSuccess', function () {
-                    $scope.messages.push({
-                        senderId: me,
-                        receiverId: other,
-                        message: $scope.message,
-                        timestamp: new Date().getTime()
-                    });
-                    $scope.message = "";
-                    $scope.$apply();
-                })
-            }else{
-                console.error('Unable to connect to the chat server');
-            }
-        }
 
     })
 

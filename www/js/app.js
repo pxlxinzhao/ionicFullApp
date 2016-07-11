@@ -14,6 +14,7 @@ angular.module('your_app_name', [
     //'ngCookies',
     //'csrf-cross-domain',
     'your_app_name.controllers',
+    'my_controller',
     'your_app_name.directives',
     'your_app_name.filters',
     'your_app_name.services',

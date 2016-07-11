@@ -6,10 +6,12 @@
           <form name="signup_form" class="" novalidate>
             <div class="item item-body">
               <label class="item item-input">
-                <input type="email" placeholder="Email" name="user_email" ng-model="user.email" required>
+                <input type="text" placeholder="Username" name="user_name" ng-model="user.username"
+                       ng-minlength="3" ng-pattern="username_pattern" required>
               </label>
               <label class="item item-input" show-hide-container>
-                <input type="password" placeholder="Password" name="user_password" ng-model="user.password" required show-hide-input>
+                <input type="password" placeholder="Password" name="user_password" ng-model="user.password"
+                       ng-minlength="3" required show-hide-input>
               </label>
             </div>
             <div class="item item-body bottom-content">
