@@ -107,18 +107,22 @@ angular.module('my_controller', [])
     })
 
     .controller('WechatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http) {
-        $scope.chat = db.chats[0];
+        $scope.chatters = [];
 
-        var receiverId = $rootScope.user.username;
-        var inProccess = false;
+        $scope.doRefresh = doRefresh;
+        doRefresh();
 
-        if (!receiverId) return;
+        //$scope.chat = db.chats[0];
+        function doRefresh(){
+            if (!$rootScope || !$rootScope.user) return;
 
-        //retrieve chatters, only do it once a time
-        if (!$rootScope.chatters && !inProccess){
-            inProccess = true;
+            var receiverId = $rootScope.user.username;
+            var inProccess = false;
 
-            $http.jsonp(CHAT_SERVER_URL + '/getChaterIds',
+            //console.log(1, receiverId);
+            if (!receiverId) return;
+
+            $http.jsonp(CHAT_SERVER_URL + '/getChatters',
                 {
                     params: {
                         username: receiverId,
@@ -126,25 +130,22 @@ angular.module('my_controller', [])
                     }
                 }).success(function(res){
                     var chatters = _.without(res, receiverId);
-                    console.log('chatters', chatters);
-                    $rootScope.chatters = chatters
+                    $scope.chatters = chatters;
                     listChatters();
-                    inProccess = false;
-
+                    console.log('chatters', chatters);
                 }).error(function(err){
                     console.log(err);
-                    inProccess = false;
-                })
+                }).finally(function(){
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+            )
+
+            //retrieve chatters, only do it once a time
+            //if (!$rootScope.chatters && !inProccess){
+            //}
         }
 
-
         function listChatters(){
-            /*var messages = _.filter(db.messages, function (record) {
-                return (record.senderId == senderId && record.receiverId == receiverId)
-                    || (record.receiverId == senderId && record.senderId == receiverId)
-            });
-            $scope.message = messages[messages.length - 1];*/
-
             /**
              * connect to server thru socket to get pushed notification
              */

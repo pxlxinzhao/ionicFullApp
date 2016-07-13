@@ -488,12 +488,18 @@ angular.module('your_app_name.controllers', [])
         };
     })
 
-    .controller('WeixinProxyCtrl', function ($scope, $state, db) {
+    .controller('WeixinProxyCtrl', function ($scope, $state, db, $timeout) {
         $state.go("app.weixin.wechat");
 
         $scope.$on("$ionicView.enter", function (scopes, states) {
             if (states.stateName == "app.weixinProxy") {
-                $state.go("app.weixin.wechat");
+                /**
+                 * need to user timeout in order to trigger
+                 * wechat ctrl again when re-enter
+                 */
+                $timeout(function(){
+                    $state.go("app.weixin.wechat");
+                }, 0)
             }
         });
     })
@@ -507,4 +513,6 @@ angular.module('your_app_name.controllers', [])
     .controller('DiscoverCtrl', function ($scope) {
 
     })
+
+
 ;

@@ -1,6 +1,10 @@
 <ion-view class="weixin-view">
     <ui-view name="tabContent"></ui-view>
 
+    <div class="spinner-div">
+        <ion-spinner icon="ios"></ion-spinner>
+    </div>
+
     <ion-tabs class="tabs-assertive tabs-icon-top">
     <!--proxy is just used to redirect to app.weixin, but also save the history at app level so we can go back when we enter chat-->
         <ion-tab title="Chat" icon-on="ion-android-chat" icon-off="ion-android-chat" ui-sref="app.weixinProxy">

@@ -1,16 +1,19 @@
 <ion-view class="wechat-view">
   <ion-content>
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()"
+            spinner="ios">
+    </ion-refresher>
     <div class="list layouts-functionalities chats-container">
-      <a class="item item-icon-left" ui-sref="app.chat({senderId: chat.name})">
-        <img class="wechat-user-icon" ng-src="{{chat.url}}" />
+      <a ng-repeat="chatter in chatters" class="item item-icon-left" ui-sref="app.chat({senderId: chatter.username})">
+        <img class="wechat-user-icon" ng-src="{{chatter.photoUrl}}" />
         <div>
-          <span class="title">{{chat.name}}</span>
-          <p class="description">{{message.message}}</p>
+          <span class="title">{{chatter.username}}</span>
+          <p class="description">Message from {{chatter.username}}</p>
         </div>
       </a>
       <div class="chats-place-holder"></div>
     </div>
-
   </ion-content>
-
 </ion-view>

@@ -78,7 +78,15 @@ $nav-offset-padding: 0px;
 
 }
 
-
+.weixin-view {
+    .spinner-div {
+        margin: auto;
+        position: absolute;
+        top: 68px; left: 0; right: 0;
+        height: 85px;
+        text-align: center;
+    }
+}
 
 
 
