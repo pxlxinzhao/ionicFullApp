@@ -117,7 +117,7 @@ angular.module('my_controller', [])
             if (!$rootScope || !$rootScope.user) return;
 
             var receiverId = $rootScope.user.username;
-            var inProccess = false;
+            //var inProccess = false;
 
             //console.log(1, receiverId);
             if (!receiverId) return;
@@ -131,7 +131,7 @@ angular.module('my_controller', [])
                 }).success(function(res){
                     var chatters = _.without(res, receiverId);
                     $scope.chatters = chatters;
-                    listChatters();
+                    listChatters(receiverId);
                     console.log('chatters', chatters);
                 }).error(function(err){
                     console.log(err);
@@ -145,7 +145,7 @@ angular.module('my_controller', [])
             //}
         }
 
-        function listChatters(){
+        function listChatters(receiverId){
             /**
              * connect to server thru socket to get pushed notification
              */
@@ -156,6 +156,10 @@ angular.module('my_controller', [])
                 socket.on('connect', function(){
                     console.log('successfully connected');
                 })
+
+                socket.emit('registerSocket', {
+                    username: receiverId
+                })
             }
         }
     })
@@ -164,29 +168,18 @@ angular.module('my_controller', [])
         var other = $stateParams.senderId;
         var me = $rootScope.user.username;
 
+        console.log('initializing socket')
+        if ($rootScope.socket){
+            $rootScope.socket.on('messageSent', refresh)
+            $rootScope.socket.on('receiveMessage', refresh)
+        }
+
         /**
          * avoid using function as ng-src
          * object has better functionality on $watch
          * @type {{}}
          */
         $scope.photoUrlCache = {};
-
-        $http.jsonp(CHAT_SERVER_URL + '/messages',
-            {
-                params: {
-                    senderId: other,
-                    receiverId: me,
-                    // this param is essential
-                    callback: JC
-                }
-            }).success(function(messages){
-                console.log('getting messages: ', messages);
-                $scope.messages = messages;
-
-                initPhotoUrl(messages);
-            }).error(function(error){
-                console.log('getting error: ', error);
-            })
 
         $scope.message = "";
 
@@ -195,10 +188,10 @@ angular.module('my_controller', [])
         }
 
         $scope.sendMessage = function () {
-            console.log('sending message')
+            //console.log('sending message')
 
             if($rootScope.socket){
-                $rootScope.socket.emit('message',
+                $rootScope.socket.emit('sendMessage',
                     {
                         senderId: me,
                         receiverId: other,
@@ -206,19 +199,49 @@ angular.module('my_controller', [])
                         time: new Date().getTime()
                     }
                 )
-
-                $rootScope.socket.on('messageSuccess', function () {
-                    $scope.messages.push({
-                        senderId: me,
-                        receiverId: other,
-                        message: $scope.message,
-                        timestamp: new Date().getTime()
-                    });
-                    $scope.message = "";
-                    $scope.$apply();
-                })
             }else{
                 console.error('Unable to connect to the chat server');
+            }
+        }
+
+        refresh();
+
+        function refresh(){
+            $http.jsonp(CHAT_SERVER_URL + '/messages',
+                {
+                    params: {
+                        senderId: other,
+                        receiverId: me,
+                        // this param is essential
+                        callback: JC
+                    }
+                }).success(function(messages){
+                    console.log('getting messages: ', messages);
+                    $scope.messages = _.sortBy(messages, function (it) {
+                        return it.time
+                    });
+
+                    initPhotoUrl(messages);
+                }).error(function(error){
+                    console.log('getting error: ', error);
+                }
+            )
+        }
+
+        /**
+         * Deprecated
+         */
+        function manuallyInsertMessage(){
+            if ($scope.message && $scope.message.length > 0){
+                $scope.messages.push({
+                    senderId: me,
+                    receiverId: other,
+                    message: $scope.message,
+                    timestamp: new Date().getTime()
+                });
+
+                $scope.message = "";
+                $scope.$apply();
             }
         }
 
@@ -237,14 +260,14 @@ angular.module('my_controller', [])
                                 callback: JC
                             }
                         }).success(function(res){
-                            console.log('res', res);
+                            //console.log('res', res);
 
                             if (res.length == 1){
-                                console.log('setting user ' + $scope.photoUrlCache[senderId]
-                                    + 'with ' + res[0].photoUrl);
+                                //console.log('setting user ' + $scope.photoUrlCache[senderId]
+                                //    + 'with ' + res[0].photoUrl);
                                 $scope.photoUrlCache[senderId] = res[0].photoUrl;
                             }
-                            console.log($scope.photoUrlCache);
+                            //console.log($scope.photoUrlCache);
                         }).error(function(err){
                             console.log(err);
                         })
