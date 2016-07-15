@@ -73,7 +73,7 @@ angular.module('my_controller', [])
 
             function pass(){
                 $rootScope.user = $scope.user;
-                $state.go('app.weixinProxy');
+                $state.go('app.wechat');
             }
         }
         /**
@@ -104,64 +104,6 @@ angular.module('my_controller', [])
             })
         }
 
-    })
-
-    .controller('WechatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http) {
-        $scope.chatters = [];
-
-        $scope.doRefresh = doRefresh;
-        doRefresh();
-
-        //$scope.chat = db.chats[0];
-        function doRefresh(){
-            if (!$rootScope || !$rootScope.user) return;
-
-            var receiverId = $rootScope.user.username;
-            //var inProccess = false;
-
-            //console.log(1, receiverId);
-            if (!receiverId) return;
-
-            $http.jsonp(CHAT_SERVER_URL + '/getChatters',
-                {
-                    params: {
-                        username: receiverId,
-                        callback: JC
-                    }
-                }).success(function(res){
-                    var chatters = _.without(res, receiverId);
-                    $scope.chatters = chatters;
-                    listChatters(receiverId);
-                    console.log('chatters', chatters);
-                }).error(function(err){
-                    console.log(err);
-                }).finally(function(){
-                    $scope.$broadcast('scroll.refreshComplete');
-                }
-            )
-
-            //retrieve chatters, only do it once a time
-            //if (!$rootScope.chatters && !inProccess){
-            //}
-        }
-
-        function listChatters(receiverId){
-            /**
-             * connect to server thru socket to get pushed notification
-             */
-            if (!$rootScope.socket){
-                var socket = io(CHAT_SERVER_URL);
-
-                $rootScope.socket = socket;
-                socket.on('connect', function(){
-                    console.log('successfully connected');
-                })
-
-                socket.emit('registerSocket', {
-                    username: receiverId
-                })
-            }
-        }
     })
 
     .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
@@ -289,3 +231,71 @@ angular.module('my_controller', [])
         }
 
     })
+
+    .controller('ContactCtrl', function ($scope, db) {
+        console.log('loading contact');
+        $scope.contacts = _.sortBy(db.chats, function (obj) {
+            return obj.name;
+        });
+    })
+
+    .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http) {
+        console.log('loading WeChatCtrl')
+        $scope.chatters = [];
+        $scope.doRefresh = doRefresh;
+
+        doRefresh();
+
+        function doRefresh(){
+            if (!$rootScope || !$rootScope.user) {
+                console.error('please log in');
+                return;
+            }
+
+            console.log('calling refresh');
+
+            var receiverId = $rootScope.user.username;
+            if (!receiverId) return;
+
+            $http.jsonp(CHAT_SERVER_URL + '/getChatters',
+                {
+                    params: {
+                        username: receiverId,
+                        callback: JC
+                    }
+                }).success(function(res){
+                    var chatters = _.without(res, receiverId);
+                    $scope.chatters = chatters;
+                    listChatters(receiverId);
+                    console.log('chatters', chatters);
+                }).error(function(err){
+                    console.log(err);
+                }).finally(function(){
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+            )
+        }
+
+        function listChatters(receiverId){
+            /**
+             * connect to server thru socket to get pushed notification
+             */
+            if (!$rootScope.socket){
+                var socket = io(CHAT_SERVER_URL);
+
+                $rootScope.socket = socket;
+                socket.on('connect', function(){
+                    console.log('successfully connected');
+                })
+
+                socket.emit('registerSocket', {
+                    username: receiverId
+                })
+            }
+        }
+    })
+
+    .controller('DiscoverCtrl', function ($scope) {
+
+    })
+;

@@ -440,10 +440,6 @@ angular.module('your_app_name.controllers', [])
         };
     })
 
-    .controller('WeixinCtrl', function ($scope, $state) {
-
-    })
-
     .controller('MeCtrl', function ($scope, $ionicActionSheet, $state) {
         $scope.airplaneMode = true;
         $scope.wifi = false;
@@ -486,32 +482,6 @@ angular.module('your_app_name.controllers', [])
             });
 
         };
-    })
-
-    .controller('WeixinProxyCtrl', function ($scope, $state, db, $timeout) {
-        $state.go("app.weixin.wechat");
-
-        $scope.$on("$ionicView.enter", function (scopes, states) {
-            if (states.stateName == "app.weixinProxy") {
-                /**
-                 * need to user timeout in order to trigger
-                 * wechat ctrl again when re-enter
-                 */
-                $timeout(function(){
-                    $state.go("app.weixin.wechat");
-                }, 0)
-            }
-        });
-    })
-
-    .controller('ContactCtrl', function ($scope, db) {
-        $scope.contacts = _.sortBy(db.chats, function (obj) {
-            return obj.name;
-        });
-    })
-
-    .controller('DiscoverCtrl', function ($scope) {
-
     })
 
 

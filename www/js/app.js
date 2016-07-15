@@ -290,61 +290,40 @@ angular.module('your_app_name', [
                 }
             })
 
-            .state('app.weixinProxy', {
-                url: "/weixinProxy",
-                views: {
-                    'menuContent': {
-                        templateUrl: "views/app/weixin.html",
-                        controller: 'WeixinProxyCtrl'
-                    }
-                }
-            })
-
-            .state('app.weixin', {
-                url: "/weixin",
-                abstract: true,
-                views: {
-                    'menuContent': {
-                        templateUrl: "views/app/weixin.html",
-                        controller: 'WeixinCtrl'
-                    }
-                }
-            })
-
-            .state('app.weixin.wechat', {
+            .state('app.wechat', {
                 url: "/wechat",
                 views: {
-                    'tabContent': {
+                    'menuContent':{
                         templateUrl: "views/app/wechat.html",
-                        controller: 'WechatCtrl'
+                        controller: 'WeChatCtrl'
                     }
                 }
             })
 
-            .state('app.weixin.contact', {
+            .state('app.contact', {
                 url: "/contact",
                 views: {
-                    'tabContent': {
+                    'menuContent': {
                         templateUrl: "views/app/contact.html",
                         controller: 'ContactCtrl'
                     }
                 }
             })
 
-            .state('app.weixin.me', {
+            .state('app.me', {
                 url: "/me",
                 views: {
-                    'tabContent': {
+                    'menuContent': {
                         templateUrl: "views/app/me.html",
                         controller: 'MeCtrl'
                     }
                 }
             })
 
-            .state('app.weixin.discover', {
+            .state('app.discover', {
                 url: "/discover",
                 views: {
-                    'tabContent': {
+                    'menuContent': {
                         templateUrl: "views/app/discover.html",
                         controller: 'DiscoverCtrl'
                     }
