@@ -110,7 +110,8 @@ angular.module('my_controller', [])
                         senderId: me,
                         receiverId: other,
                         message: $scope.message,
-                        time: new Date().getTime()
+                        time: new Date().getTime(),
+                        unread: true
                     }
                 )
             }else{
@@ -174,21 +175,17 @@ angular.module('my_controller', [])
         }
     })
 
-    .controller('ContactCtrl', function ($scope, db) {
-        console.log('loading contact');
-        $scope.contacts = _.sortBy(db.chats, function (obj) {
-            return obj.name;
-        });
-    })
-
     .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http) {
         console.log('loading WeChatCtrl')
         $scope.chatters = [];
         $scope.doRefresh = doRefresh;
+        $scope.countNewMsg = countNewMsg;
 
         doRefresh();
 
         function doRefresh(){
+            $scope.chatters = [];
+
             if (!$rootScope || !$rootScope.user) {
                 console.error('please log in');
                 return;
@@ -207,8 +204,10 @@ angular.module('my_controller', [])
                     }
                 }).success(function(res){
                     var chatters = _.without(res, receiverId);
-                    $scope.chatters = chatters;
-                    listChatters(receiverId);
+
+                    connectSocket(receiverId);
+                    countNewMsg(chatters);
+
                     console.log('chatters', chatters);
                 }).error(function(err){
                     console.log(err);
@@ -218,7 +217,7 @@ angular.module('my_controller', [])
             )
         }
 
-        function listChatters(receiverId){
+        function connectSocket(receiverId){
             /**
              * connect to server thru socket to get pushed notification
              */
@@ -233,8 +232,48 @@ angular.module('my_controller', [])
                 socket.emit('registerSocket', {
                     username: receiverId
                 })
+
+                socket.on('receiveMessage', function(msg){
+                    console.log('new message', msg);
+                    doRefresh();
+                })
             }
         }
+
+        function countNewMsg(chatters){
+            for (var i=0; i<chatters.length; i++){
+                var chatter = chatters[i];
+                countNewMsgById(chatter);
+            }
+        }
+
+        function countNewMsgById(chatter){
+            var id = chatter.username;
+
+            $http.jsonp(CHAT_SERVER_URL + '/countNewMessage',
+                {
+                    params: {
+                        senderId: id,
+                        callback: JC
+                    }
+                }).success(function(res){
+                    chatter.count = res;
+                    $scope.chatters.push(chatter);
+
+                    console.log('sender: ' + id + ' has ' + res + ' messages');
+                }).error(function(err){
+                    console.log(err);
+                }).finally(function(){
+                }
+            )
+        }
+    })
+
+    .controller('ContactCtrl', function ($scope, db) {
+        console.log('loading contact');
+        $scope.contacts = _.sortBy(db.chats, function (obj) {
+            return obj.name;
+        });
     })
 
     .controller('DiscoverCtrl', function ($scope) {

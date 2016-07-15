@@ -370,5 +370,15 @@ angular.module('your_app_name.directives', [])
 	};
 })
 
+.directive('newMsg', function() {
+	return {
+		restrict: "E",
+		scope: {
+			count: '@'
+		},
+		template: '<div class="newMsg" ng-hide="{{count == 0}}">{{count}}</div>'
+	};
+});
+
 
 ;

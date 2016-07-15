@@ -1,6 +1,21 @@
 $green-color: #33cd5f;
 $green-color-deep: #28a54c;
+$red-color: #de473d;
+$yellow-color: #F0E68C;
 $nav-offset-padding: 0px;
+
+.newMsg {
+    background-color: $yellow-color;
+    border-radius: 20px;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    top: 20px;
+    padding: 2px;
+    text-align: center;
+}
 
 .contact-view{
     ion-content {
@@ -14,8 +29,6 @@ $nav-offset-padding: 0px;
         }
     }
 }
-
-
 
 .chat-view {
     ion-content {

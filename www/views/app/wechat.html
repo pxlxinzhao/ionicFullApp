@@ -12,6 +12,7 @@
           <span class="title">{{chatter.username}}</span>
           <p class="description">Message from {{chatter.username}}</p>
         </div>
+        <new-msg count="{{chatter.count ? chatter.count : 0}}"></new-msg>
       </a>
       <div class="chats-place-holder"></div>
     </div>
