@@ -76,34 +76,6 @@ angular.module('my_controller', [])
                 $state.go('app.wechat');
             }
         }
-        /**
-         * This is using json to validate
-         * Not used
-         */
-        function useJsonValidation(){
-            $http.get('setting/user-preference.json').success(function (data) {
-
-                $scope.user.email = data.username;
-                $scope.user.pin = "12345";
-
-                // We need this for the form validation
-                $scope.selected_tab = "";
-
-                $scope.$on('my-tabs-changed', function (event, data) {
-                    $scope.selected_tab = data.title;
-                });
-
-                $scope.doLogIn = function () {
-                    if ($scope.user && $scope.user.email && $scope.user.email.length > 0) {
-                        $rootScope.user = $scope.user;
-                        $state.go('app.weixinProxy');
-                    }else{
-                        console.info('username has to be longer than 3 letters', $scope.user);
-                    }
-                };
-            })
-        }
-
     })
 
     .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
@@ -170,23 +142,6 @@ angular.module('my_controller', [])
             )
         }
 
-        /**
-         * Deprecated
-         */
-        function manuallyInsertMessage(){
-            if ($scope.message && $scope.message.length > 0){
-                $scope.messages.push({
-                    senderId: me,
-                    receiverId: other,
-                    message: $scope.message,
-                    timestamp: new Date().getTime()
-                });
-
-                $scope.message = "";
-                $scope.$apply();
-            }
-        }
-
         function initPhotoUrl(messages){
             var senders = _.countBy(messages, 'senderId');
 
@@ -217,19 +172,6 @@ angular.module('my_controller', [])
 
             }
         }
-
-        /**
-         * For retrieving fake messages
-         * Deprecated
-         * @returns {*}
-         */
-        function retrieveMessages(){
-            return messages = _.filter(db.messages, function (record) {
-                return (record.senderId == senderId && record.receiverId == receiverId)
-                    || (record.receiverId == senderId && record.senderId == receiverId)
-            });
-        }
-
     })
 
     .controller('ContactCtrl', function ($scope, db) {
