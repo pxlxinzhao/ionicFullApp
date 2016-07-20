@@ -175,11 +175,19 @@ angular.module('my_controller', [])
         }
     })
 
-    .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http) {
-        console.log('loading WeChatCtrl')
+    .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http, $state) {
+        //console.log('loading WeChatCtrl')
         $scope.chatters = [];
         $scope.doRefresh = doRefresh;
         $scope.countNewMsg = countNewMsg;
+
+        $scope.$on( "$ionicView.beforeEnter", function( scopes, states ) {
+            console.log("states", states);
+            if( states.fromCache && states.stateName == "app.wechat" ) {
+                console.log("back to wechat view");
+                doRefresh();
+            }
+        });
 
         doRefresh();
 
@@ -188,6 +196,7 @@ angular.module('my_controller', [])
 
             if (!$rootScope || !$rootScope.user) {
                 console.error('please log in');
+                $state.go('auth.walkthrough');
                 return;
             }
 
@@ -258,6 +267,8 @@ angular.module('my_controller', [])
                         callback: JC
                     }
                 }).success(function(res){
+                    console.log("finish counting");
+
                     chatter.count = res;
                     $scope.chatters.push(chatter);
 
