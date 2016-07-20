@@ -1,7 +1,7 @@
 <ion-view class="contact-view">
   <ion-content>
     <div class="list layouts-functionalities chats-container">
-      <a ng-repeat="contact in contacts" class="item item-icon-left">
+      <a ng-repeat="contact in contacts" class="item item-icon-left" ui-sref="app.chat({senderId: contact.name})">
         <img class="wechat-user-icon" ng-src="{{contact.url}}" />
         <div>
           <span class="title">{{contact.name}}</span>

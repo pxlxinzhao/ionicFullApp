@@ -4,20 +4,18 @@ angular.module('your_app_name.controllers', [])
 
     })
 
-    .controller('AppCtrl', function ($rootScope, $scope, $ionicConfig) {
+    .controller('AppCtrl', function ($rootScope, $scope, $state, $ionicConfig) {
         /**
          * not handling images for now, just use default
          * @type {string}
          */
 
-        //$scope.username = $rootScope.user.email;
         $scope.imageUrl = 'img/people/blank.jpg';
 
-        //if ($scope.username == 'Patrick Pu'){
-        //    $scope.imageUrl = 'img/people/patrickpu.jpg';
-        //}else if($scope.username == 'Mandi Gross'){
-        //    $scope.imageUrl = 'img/people/001.jpg';
-        //}
+        if (!$rootScope || !$rootScope.user) {
+            $state.go('auth.walkthrough');
+            return;
+        }
     })
 
 

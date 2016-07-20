@@ -14,7 +14,7 @@ angular.module('my_controller', [])
 
         $scope.doSignUp = function () {
             var params = _.extend($scope.user, {callback: JC});
-            console.log(params);
+            //console.log(params);
 
             if (enableUserRegistration){
                 register();
@@ -28,10 +28,10 @@ angular.module('my_controller', [])
                     {
                         params: params
                     }).success(function(res){
-                        console.log(res);
+                        //console.log(res);
                         $state.go("auth.login");
                     }).error(function(err){
-                        console.log(err);
+                        console.error(err);
                     })
             }
         };
@@ -62,16 +62,17 @@ angular.module('my_controller', [])
                     {
                         params: params
                     }).success(function(res){
-                        console.log(res);
+                        //console.log(res);
                         if (res.length == 1){
                             pass();
                         }
                     }).error(function(err){
-                        console.log(err);
+                        console.error(err);
                     })
             }
 
             function pass(){
+                //console.log("passed validation");
                 $rootScope.user = $scope.user;
                 $state.go('app.wechat');
             }
@@ -79,10 +80,21 @@ angular.module('my_controller', [])
     })
 
     .controller('ChatCtrl', function ($http, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
+
+        $scope.$on( "$ionicView.beforeEnter", function( scopes, states ) {
+            //console.log("states", states);
+            if( states.stateName == "app.chat" ) {
+                $rootScope.activeView = states.stateName
+                //console.log("activeView is: ", states.stateName);
+
+                refresh();
+            }
+        });
+
         var other = $stateParams.senderId;
         var me = $rootScope.user.username;
 
-        console.log('initializing socket')
+        //console.log('initializing socket')
         if ($rootScope.socket){
             $rootScope.socket.on('messageSent', refresh)
             $rootScope.socket.on('receiveMessage', refresh)
@@ -122,6 +134,10 @@ angular.module('my_controller', [])
         refresh();
 
         function refresh(){
+            if ($rootScope.activeView != "app.chat"){
+                return;
+            }
+
             $http.jsonp(CHAT_SERVER_URL + '/messages',
                 {
                     params: {
@@ -131,14 +147,14 @@ angular.module('my_controller', [])
                         callback: JC
                     }
                 }).success(function(messages){
-                    console.log('getting messages: ', messages);
+                    //console.log('getting messages: ', messages);
                     $scope.messages = _.sortBy(messages, function (it) {
                         return it.time
                     });
 
                     initPhotoUrl(messages);
                 }).error(function(error){
-                    console.log('getting error: ', error);
+                    //console.error('getting error: ', error);
                 }
             )
         }
@@ -167,7 +183,7 @@ angular.module('my_controller', [])
                             }
                             //console.log($scope.photoUrlCache);
                         }).error(function(err){
-                            console.log(err);
+                            console.error(err);
                         })
                 })(senderId)
 
@@ -175,35 +191,57 @@ angular.module('my_controller', [])
         }
     })
 
-    .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http, $state) {
-        //console.log('loading WeChatCtrl')
-        $scope.chatters = [];
+    .controller('WeChatCtrl', function ($rootScope, $scope, db, CHAT_SERVER_URL, $http, $state, $timeout) {
         $scope.doRefresh = doRefresh;
         $scope.countNewMsg = countNewMsg;
 
+        var refreshCount = 0;
+
         $scope.$on( "$ionicView.beforeEnter", function( scopes, states ) {
-            console.log("states", states);
             if( states.fromCache && states.stateName == "app.wechat" ) {
-                console.log("back to wechat view");
-                doRefresh();
+                $rootScope.activeView = states.stateName
+                //console.log("activeView is: ", states.stateName);
+
+                doRefresh(true);
             }
         });
 
-        doRefresh();
+        doRefresh(true);
 
-        function doRefresh(){
-            $scope.chatters = [];
+        function doRefresh(count){
+            /**
+             * Control that do refresh only 1 instance is running
+             */
+            //console.log("count", count);
 
-            if (!$rootScope || !$rootScope.user) {
-                console.error('please log in');
-                $state.go('auth.walkthrough');
+            if (count){
+                //console.log("plus count");
+                refreshCount++;
+            }
+
+            //console.log("refreshCount", refreshCount);
+            if (refreshCount > 1) {
+                /**
+                 * This is for defer the refresh, not working very well
+                 * needs to comment out refreshCount--
+                 * because it's going to happen in the callback
+                 */
+                /*$timeout(function(){
+                    console.log("doRefresh is already in process, thus wait");
+                    doRefresh(false);
+                },1000);*/
+
+                /**
+                 * Doing nothing if refresh already happened
+                 */
+                //console.log("aborting refresh");
+                refreshCount--;
                 return;
             }
 
-            console.log('calling refresh');
-
+            $scope.chatters = [];
             var receiverId = $rootScope.user.username;
-            if (!receiverId) return;
+            //if (!receiverId) return;
 
             $http.jsonp(CHAT_SERVER_URL + '/getChatters',
                 {
@@ -217,11 +255,12 @@ angular.module('my_controller', [])
                     connectSocket(receiverId);
                     countNewMsg(chatters);
 
-                    console.log('chatters', chatters);
+                    //console.log('chatters', chatters);
                 }).error(function(err){
-                    console.log(err);
+                    console.error(err);
                 }).finally(function(){
                     $scope.$broadcast('scroll.refreshComplete');
+                    //console.log("minus count");
                 }
             )
         }
@@ -235,7 +274,7 @@ angular.module('my_controller', [])
 
                 $rootScope.socket = socket;
                 socket.on('connect', function(){
-                    console.log('successfully connected');
+                    //console.log('successfully connected');
                 })
 
                 socket.emit('registerSocket', {
@@ -243,17 +282,46 @@ angular.module('my_controller', [])
                 })
 
                 socket.on('receiveMessage', function(msg){
-                    console.log('new message', msg);
-                    doRefresh();
+                    //console.log('new message', msg);
+                    doRefresh(true);
                 })
             }
         }
+
+        /**
+         * steps:
+         * 1. count unread messages
+         * 2. set most recent messages
+         * 3. refresh count --   // this is not tested when have multiple chatters
+         */
 
         function countNewMsg(chatters){
             for (var i=0; i<chatters.length; i++){
                 var chatter = chatters[i];
                 countNewMsgById(chatter);
             }
+        }
+
+        function getMostRecentMessage(chatter){
+            var id = chatter.username;
+
+            $http.jsonp(CHAT_SERVER_URL + '/getRecentMsg',
+                {
+                    params: {
+                        senderId: id,
+                        receiverId: $rootScope.user.username,
+                        callback: JC
+                    }
+                }).success(function(res){
+                    //console.log("get most recent message is: ", res);
+                    chatter.recentMsg = res[0].message;
+                    $scope.chatters.push(chatter);
+                }).error(function(err){
+                    console.error(err);
+                }).finally(function(){
+                    refreshCount--;
+                }
+            )
         }
 
         function countNewMsgById(chatter){
@@ -267,14 +335,13 @@ angular.module('my_controller', [])
                         callback: JC
                     }
                 }).success(function(res){
-                    console.log("finish counting");
-
+                    //console.log("setting count to:", res);
                     chatter.count = res;
-                    $scope.chatters.push(chatter);
+                    getMostRecentMessage(chatter);
 
-                    console.log('sender: ' + id + ' has ' + res + ' messages');
+                    //console.log('sender: ' + id + ' has ' + res + ' messages');
                 }).error(function(err){
-                    console.log(err);
+                    console.error(err);
                 }).finally(function(){
                 }
             )
@@ -282,7 +349,7 @@ angular.module('my_controller', [])
     })
 
     .controller('ContactCtrl', function ($scope, db) {
-        console.log('loading contact');
+        //console.log('loading contact');
         $scope.contacts = _.sortBy(db.chats, function (obj) {
             return obj.name;
         });
