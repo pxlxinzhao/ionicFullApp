@@ -254,6 +254,7 @@ angular.module('my_controller', [])
                 {
                     params: {
                         senderId: id,
+                        receiverId: $rootScope.user.username,
                         callback: JC
                     }
                 }).success(function(res){
