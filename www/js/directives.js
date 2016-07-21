@@ -379,6 +379,3 @@ angular.module('your_app_name.directives', [])
 		template: '<div class="newMsg" ng-hide="{{count == 0}}">{{count}}</div>'
 	};
 });
-
-
-;
