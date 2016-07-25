@@ -399,7 +399,7 @@ angular.module('your_app_name.controllers', [])
         $ionicLoading.hide();
 
         $scope.sharePost = function (link) {
-            window.plugins.socialsharing.share('Check this post here: ', null, null, link);
+            //window.plugins.socialsharing.share('Check this post here: ', null, null, link);
         };
     })
 
@@ -430,11 +430,11 @@ angular.module('your_app_name.controllers', [])
         };
 
         $scope.shareImage = function (image) {
-            window.plugins.socialsharing.share(null, null, image);
+            //window.plugins.socialsharing.share(null, null, image);
         };
 
         $scope.shareAll = function () {
-            window.plugins.socialsharing.share(null, null, $scope.images);
+            //window.plugins.socialsharing.share(null, null, $scope.images);
         };
     })
 

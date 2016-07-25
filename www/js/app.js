@@ -10,7 +10,7 @@ angular.module('underscore', [])
 // the 2nd parameter is an array of 'requires'
 angular.module('your_app_name', [
     'ionic',
-    'angularMoment',
+    //'angularMoment',
     //'ngCookies',
     //'csrf-cross-domain',
     'your_app_name.controllers',

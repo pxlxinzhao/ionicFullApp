@@ -15,7 +15,6 @@ angular.module('my_controller', [])
             var params = _.extend($scope.user, {
                 callback: JC
             });
-            //console.log(params);
 
             if (enableUserRegistration) {
                 register();
@@ -28,7 +27,6 @@ angular.module('my_controller', [])
                 $http.jsonp(CHAT_SERVER_URL + '/register', {
                     params: params
                 }).success(function(res) {
-                    //console.log(res);
                     $state.go("auth.login");
                 }).error(function(err) {
                     console.error(err);
@@ -38,7 +36,7 @@ angular.module('my_controller', [])
     })
 
 
-    .controller('LoginCtrl', function($http, $rootScope, $scope, $state,
+    .controller('LoginCtrl', function($httpHelper, $http, $rootScope, $scope, $state,
                                       CHAT_SERVER_URL, $templateCache, $q) {
         $scope.user = {
             username: 'Patrick Pu',
@@ -56,24 +54,21 @@ angular.module('my_controller', [])
             $scope.doLogIn = login;
 
             function login() {
-                var params = _.extend($scope.user, {
-                    callback: JC
-                });
+                console.log("login with ", $scope.user);
 
-                $http.jsonp(CHAT_SERVER_URL + '/validateUser', {
-                    params: params
-                }).success(function(res) {
-                    //console.log(res);
-                    if (res.length == 1) {
-                        pass();
+                $httpHelper.get(
+                    CHAT_SERVER_URL + '/validateUser',
+                    $scope.user,
+                    function(res) {
+                        console.log(res);
+                        if (res.length == 1) {
+                            pass();
+                        }
                     }
-                }).error(function(err) {
-                    console.error(err);
-                });
+                );
             }
 
             function pass() {
-                //console.log("passed validation");
                 $rootScope.user = $scope.user;
                 $state.go('app.wechat');
             }
