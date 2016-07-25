@@ -120,6 +120,8 @@ angular.module('my_controller', [])
                     time: new Date().getTime(),
                     unread: true
                 });
+
+                $scope.message = "";
             } else {
                 console.error('Unable to connect to the chat server');
             }
