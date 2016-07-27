@@ -4,6 +4,10 @@ $red-color: #de473d;
 $yellow-color: #F0E68C;
 $nav-offset-padding: 0px;
 
+.empty-div {
+    height: 49px;
+}
+
 .walkthrough-view{
     .wechat-logo {
         font-size: 4rem;
@@ -91,10 +95,6 @@ $nav-offset-padding: 0px;
 .me-view {
     ion-content {
         padding-top: $nav-offset-padding;
-
-        .empty-div {
-            height: 49px;
-        }
     }
 
 }
