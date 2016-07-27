@@ -8,6 +8,7 @@ showcase/
 node_modules/
 platforms/
 plugins/
+hooks/
 hooks/after_prepare/030_clean_dev_files_from_platforms.js
 hooks/after_prepare/040_move_dist_files_to_platforms.js
 hooks/after_prepare/050_clean_obfuscation.js
