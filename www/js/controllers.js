@@ -10,7 +10,17 @@ angular.module('your_app_name.controllers', [])
          * @type {string}
          */
 
-        $scope.imageUrl = 'img/people/blank.jpg';
+
+
+
+        $rootScope.$watch("user", function(){
+            console.log($rootScope.user);
+
+            var profileUrl = $rootScope.user.username ? $rootScope.user.photoUrl : 'img/people/blank.jpg';
+            $scope.imageUrl = profileUrl;
+
+            console.log(profileUrl);
+        });
 
         if (!$rootScope || !$rootScope.user) {
             $state.go('auth.walkthrough');

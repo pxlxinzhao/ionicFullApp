@@ -4,6 +4,14 @@ $red-color: #de473d;
 $yellow-color: #F0E68C;
 $nav-offset-padding: 0px;
 
+.walkthrough-view{
+    .wechat-logo {
+        font-size: 4rem;
+        color: whitesmoke;
+        font-family: "Arial", sans-serif;
+    }
+}
+
 .newMsg {
     background-color: $yellow-color;
     border-radius: 20px;

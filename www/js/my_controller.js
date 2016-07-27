@@ -62,14 +62,15 @@ angular.module('my_controller', [])
                     function(res) {
                         console.log(res);
                         if (res.length == 1) {
-                            pass();
+                            pass(res[0]);
                         }
                     }
                 );
             }
 
-            function pass() {
-                $rootScope.user = $scope.user;
+            function pass(user) {
+                console.log("setting user to root: ", user);
+                $rootScope.user = user;
                 $state.go('app.wechat');
             }
         }
@@ -319,4 +320,8 @@ angular.module('my_controller', [])
 
     .controller('DiscoverCtrl', function($scope) {
 
+    })
+
+    .controller('ProfileCtrl', function($scope, $rootScope){
+        $scope.user = $rootScope.user;
     });

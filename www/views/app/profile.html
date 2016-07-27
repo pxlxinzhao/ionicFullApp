@@ -7,14 +7,14 @@
       <div class="profile-container">
         <div class="user-image-container">
           <pre-img ratio="_1_1" helper-class="rounded-image">
-            <img class="user-image" ng-src="https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg" spinner-on-load>
+            <img class="user-image" ng-src="{{user.photoUrl}}" spinner-on-load>
           </pre-img>
         </div>
-        <div class="user-name">Brynn Evans</div>
-        <div class="user-twitter">@brynn</div>
+        <div class="user-name">{{user.username}}</div>
+        <div class="user-twitter">@{{user.username.toLowerCase().replace(" ", "")}}</div>
       </div>
       <div class="user-background-image-outer">
-        <div multi-bg="['https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg']"></div>
+        <div multi-bg="[user.photoUrl]"></div>
       </div>
     </div>
     <div class="bottom-content">
