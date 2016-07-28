@@ -297,23 +297,6 @@ angular.module('your_app_name.factories', [])
           name: "Nakashima Yuko",
           message: "Nulla consequat facilisis proin sed ligula libero gravida ultrices, sollicitudin at in tincidunt eget suscipit placerat, enim sociosqu enim libero semper ac sed.",
           url: "img/people/011.jpg"
-        }],
-
-        messages: [{
-          senderId: "Mandi Gross",
-          receiverId: "Patrick Pu",
-          message: "Hello, how are you?",
-          timestamp: 1465588012
-        }, {
-          senderId: "Patrick Pu",
-          receiverId: "Mandi Gross",
-          message: "I am hungry, go grab a lunch?",
-          timestamp: 1465688012
-        }, {
-          senderId: "Mandi Gross",
-          receiverId: "Patrick Pu",
-          message: "Why not? Let's go",
-          timestamp: 1465788012
         }]
       };
     });
