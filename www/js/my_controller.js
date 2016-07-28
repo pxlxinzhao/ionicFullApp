@@ -6,7 +6,7 @@ var JC = 'JSON_CALLBACK';
 angular.module('my_controller', [])
 
     .controller('SignupCtrl', function($scope, $http, CHAT_SERVER_URL, $state) {
-        var enableUserRegistration = false;
+        var enableUserRegistration = true;
 
         $scope.user = {};
         $scope.username_pattern = /^([a-zA-z]+(\ [a-zA-z]+)+)$/;
