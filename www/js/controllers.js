@@ -410,23 +410,19 @@ angular.module('your_app_name.controllers', [])
     })
 
 
-    .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera) {
-
+    .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera, $loading, $toast, $httpHelper) {
         $scope.images = [];
 
         $scope.selImages = function () {
-
             window.imagePicker.getPictures(
                 function (results) {
-                    for (var i = 0; i < results.length; i++) {
-                        console.log('Image URI: ' + results[i]);
-                        $scope.images.push(results[i]);
+                    // supposed to be a loop, break the loop because of jslint
+                    var i = 0;
+                    var image = results[i];
 
-                        /**
-                         * just take first image
-                         */
-                        break;
-                    }
+                    console.log('Image URI: ' + image);
+                    $scope.images.push(image);
+
                     if (!$scope.$$phase) {
                         $scope.$apply();
                     }
@@ -442,15 +438,45 @@ angular.module('your_app_name.controllers', [])
 
         $scope.shareImage = function (image) {
             //window.plugins.socialsharing.share(null, null, image);
+            if (!image){
+                console.log("sharing null image");
+                return;
+            }
 
-            /**
-             * image is a local file system path
-             */
+            //$loading.show('Sharing...');
+            getFileContentAsBase64(image ,function(base64Image){
+                //window.open(base64Image);
+                console.log(base64Image);
+                // Then you'll be able to handle the myimage.png file as base64
+                //$loading.hide();
+                $toast.show("Updated successfully");
+            });
         };
 
         $scope.shareAll = function () {
             //window.plugins.socialsharing.share(null, null, $scope.images);
         };
+
+        function getFileContentAsBase64(path,callback){
+            window.resolveLocalFileSystemURL(path, gotFile, fail);
+
+            function fail(e) {
+                console.info('Cannot found requested file');
+            }
+
+            function gotFile(fileEntry) {
+                fileEntry.file(function(file) {
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        var content = this.result;
+                        callback(content);
+                    };
+                    // The most important point, use the readAsDatURL Method from the file plugin
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
     })
 
     .controller('MeCtrl', function ($scope, $ionicActionSheet, $state) {

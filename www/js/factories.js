@@ -234,6 +234,19 @@ angular.module('your_app_name.factories', [])
       };
     })
 
+    .factory('$loading', function($ionicLoading){
+      return {
+        show: function(tpl) {
+          $ionicLoading.show({
+            template: tpl ? tpl : 'Loading...'
+          });
+        },
+        hide:function(){
+          $ionicLoading.hide();
+        }
+      };
+    })
+
     .factory('$httpHelper', function($http){
       return {
         get: function(url, param, success, error, final){
