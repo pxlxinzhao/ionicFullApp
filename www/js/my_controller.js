@@ -37,7 +37,7 @@ angular.module('my_controller', [])
 
 
     .controller('LoginCtrl', function($httpHelper, $http, $rootScope, $scope, $state,
-                                      CHAT_SERVER_URL, $templateCache, $q) {
+                                      CHAT_SERVER_URL, $toast) {
         $scope.user = {
             username: 'Patrick Pu',
             password: '123'
@@ -63,6 +63,8 @@ angular.module('my_controller', [])
                         console.log(res);
                         if (res.length == 1) {
                             pass(res[0]);
+                        }else{
+                            fail();
                         }
                     }
                 );
@@ -73,25 +75,32 @@ angular.module('my_controller', [])
                 $rootScope.user = user;
                 $state.go('app.wechat');
             }
+
+            function fail(){
+                $toast.show("Wrong username or password");
+            }
         }
     })
 
-    .controller('ChatCtrl', function($http, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
-
+    .controller('ChatCtrl', function($httpHelper, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
         $scope.$on("$ionicView.beforeEnter", function(scopes, states) {
-            //console.log("states", states);
             if (states.stateName == "app.chat") {
                 $rootScope.activeView = states.stateName;
-                //console.log("activeView is: ", states.stateName);
-
                 refresh();
             }
         });
 
+        var hasMore = true;
+        var page = 1;
+
+        $scope.loadMore = function(){
+            page++;
+            refresh();
+        };
+
         var other = $stateParams.senderId;
         var me = $rootScope.user.username;
 
-        //console.log('initializing socket')
         if ($rootScope.socket) {
             $rootScope.socket.on('messageSent', refresh);
             $rootScope.socket.on('receiveMessage', refresh);
@@ -103,7 +112,7 @@ angular.module('my_controller', [])
          * @type {{}}
          */
         $scope.photoUrlCache = {};
-
+        $scope.messages= [];
         $scope.message = "";
 
         $scope.isRight = function(message) {
@@ -111,8 +120,6 @@ angular.module('my_controller', [])
         };
 
         $scope.sendMessage = function() {
-            //console.log('sending message')
-
             if ($rootScope.socket) {
                 $rootScope.socket.emit('sendMessage', {
                     senderId: me,
@@ -135,23 +142,41 @@ angular.module('my_controller', [])
                 return;
             }
 
-            $http.jsonp(CHAT_SERVER_URL + '/messages', {
-                params: {
+            if(!hasMore){
+                console.log("no more messages");
+                $scope.$broadcast('scroll.refreshComplete');
+                return;
+            }
+
+            console.log("retrieving page #" + page);
+            $httpHelper.get(
+                CHAT_SERVER_URL + '/messages',
+                {
                     senderId: other,
                     receiverId: me,
-                    // this param is essential
-                    callback: JC
-                }
-            }).success(function(messages) {
-                //console.log('getting messages: ', messages);
-                $scope.messages = _.sortBy(messages, function(it) {
-                    return it.time;
-                });
+                    page: page
+                },
+                function(messages) {
+                    var newMessages = _.sortBy(messages, function(it) {
+                        return it.time;
+                    });
 
-                initPhotoUrl(messages);
-            }).error(function(error) {
-                //console.error('getting error: ', error);
-            });
+                    if (newMessages && newMessages.length > 0){
+                        $scope.messages = newMessages.concat($scope.messages);
+                    }else{
+                        hasMore = false;
+                    }
+
+                    //TODO something weird going on here, should it be done in WechatCtrl?
+                    if (page == 1){
+                        initPhotoUrl(messages);
+                    }
+                },
+                null,
+                function(){
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+            );
         }
 
         function initPhotoUrl(messages) {
@@ -163,18 +188,17 @@ angular.module('my_controller', [])
         }
 
         function getPhotoUrl(senderId){
-            $http.jsonp(CHAT_SERVER_URL + '/getPhotoUrl', {
-                params: {
+            $httpHelper.get(
+                CHAT_SERVER_URL + '/getPhotoUrl',
+                {
                     username: senderId,
-                    callback: JC
+                },
+                function(res) {
+                    if (res.length == 1) {
+                        $scope.photoUrlCache[senderId] = res[0].photoUrl;
+                    }
                 }
-            }).success(function(res) {
-                if (res.length == 1) {
-                    $scope.photoUrlCache[senderId] = res[0].photoUrl;
-                }
-            }).error(function(err) {
-                console.error(err);
-            });
+            );
         }
     }
     )

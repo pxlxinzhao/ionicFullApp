@@ -1,11 +1,19 @@
 <ion-view class="chat-view">
     <ion-content>
+        <ion-refresher
+                pulling-text="Load more..."
+                on-refresh="loadMore()"
+                spinner="ios">
+        </ion-refresher>
+
         <div ng-repeat="message in messages" ng-class="{'chat-entry': 1, 'chat-right': isRight(message)}">
             <img ng-src="{{photoUrlCache[message.senderId]}}" ng-class="{'wechat-user-icon': 1, 'chat-right': isRight(message)}"/>
             <div class="chat-chatbox-container">
                 <p class="chat-chatbox">{{message.message}}</p>
             </div>
         </div>
+
+        <div class="empty-div"></div>
     </ion-content>
 
     <div class="bar bar-footer bar-assertive chat-bar">

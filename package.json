@@ -33,6 +33,7 @@
     "mv": "^2.1.1"
   },
   "cordovaPlugins": [
+    "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
     "https://github.com/phonegap-build/PushPlugin.git",
     "com.ionic.keyboard",
     "org.pushandplay.cordova.apprate",
@@ -49,7 +50,11 @@
     "nl.x-services.plugins.socialsharing",
     "com.synconset.imagepicker",
     "cordova-plugin-geolocation",
-    "cordova-plugin-splashscreen"
+    "cordova-plugin-splashscreen",
+    {
+      "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-toast"
+    }
   ],
   "cordovaPlatforms": [
     "ios",

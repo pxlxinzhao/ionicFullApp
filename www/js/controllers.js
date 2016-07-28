@@ -9,10 +9,6 @@ angular.module('your_app_name.controllers', [])
          * not handling images for now, just use default
          * @type {string}
          */
-
-
-
-
         $rootScope.$watch("user", function(){
             console.log($rootScope.user);
 

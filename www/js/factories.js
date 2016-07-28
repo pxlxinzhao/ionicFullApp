@@ -218,22 +218,33 @@ angular.module('your_app_name.factories', [])
       };
     })
 
+    .factory('$toast', function($cordovaToast) {
+      return {
+        show: function(message) {
+          var isIOS = ionic.Platform.isIOS();
+          var isAndroid = ionic.Platform.isAndroid();
+          var isWindowsPhone = ionic.Platform.isWindowsPhone();
+
+          if (isIOS || isAndroid || isWindowsPhone){
+            $cordovaToast.show(message, 'long', 'center');
+          }else{
+            alert(message);
+          }
+        }
+      };
+    })
+
     .factory('$httpHelper', function($http){
       return {
-        get: function(url, param, success, error){
+        get: function(url, param, success, error, final){
           if (!error) error = function(err){console.info(err);};
 
           var isIOS = ionic.Platform.isIOS();
           var isAndroid = ionic.Platform.isAndroid();
           var isWindowsPhone = ionic.Platform.isWindowsPhone();
 
-          if (isIOS || isAndroid || isWindowsPhone){
-            var req1 = _.extend(param, {jsonp: false});
-            $http.get(url, {params: req1}).success(success).error(error);
-          }else{
-            var req2 = _.extend(param, {jsonp: true, callback: "JSON_CALLBACK"});
-            $http.jsonp(url, {params: req2}).success(success).error(error);
-          }
+          var req2 = _.extend(param, {callback: "JSON_CALLBACK"});
+          $http.jsonp(url, {params: req2}).success(success).error(error).finally(final);
 
         }
       };
