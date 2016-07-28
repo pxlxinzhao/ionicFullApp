@@ -421,6 +421,11 @@ angular.module('your_app_name.controllers', [])
                     for (var i = 0; i < results.length; i++) {
                         console.log('Image URI: ' + results[i]);
                         $scope.images.push(results[i]);
+
+                        /**
+                         * just take first image
+                         */
+                        break;
                     }
                     if (!$scope.$$phase) {
                         $scope.$apply();
@@ -437,6 +442,10 @@ angular.module('your_app_name.controllers', [])
 
         $scope.shareImage = function (image) {
             //window.plugins.socialsharing.share(null, null, image);
+
+            /**
+             * image is a local file system path
+             */
         };
 
         $scope.shareAll = function () {

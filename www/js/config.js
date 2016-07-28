@@ -5,6 +5,6 @@ angular.module('your_app_name.config', [])
 /**
  * Switch chat server between test and production
  */
-//.constant('CHAT_SERVER_URL', 'https://wechat-p.herokuapp.com')
-.constant('CHAT_SERVER_URL', 'https://wechat-pxlxinzhao.c9users.io:8080')
+.constant('CHAT_SERVER_URL', 'https://wechat-p.herokuapp.com')
+//.constant('CHAT_SERVER_URL', 'https://wechat-pxlxinzhao.c9users.io:8080')
 ;

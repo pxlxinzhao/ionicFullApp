@@ -228,7 +228,7 @@ angular.module('your_app_name.factories', [])
           if (isIOS || isAndroid || isWindowsPhone){
             $cordovaToast.show(message, 'long', 'center');
           }else{
-            alert(message);
+            console.log(message);
           }
         }
       };
@@ -239,9 +239,9 @@ angular.module('your_app_name.factories', [])
         get: function(url, param, success, error, final){
           if (!error) error = function(err){console.info(err);};
 
-          var isIOS = ionic.Platform.isIOS();
-          var isAndroid = ionic.Platform.isAndroid();
-          var isWindowsPhone = ionic.Platform.isWindowsPhone();
+          //var isIOS = ionic.Platform.isIOS();
+          //var isAndroid = ionic.Platform.isAndroid();
+          //var isWindowsPhone = ionic.Platform.isWindowsPhone();
 
           var req2 = _.extend(param, {callback: "JSON_CALLBACK"});
           $http.jsonp(url, {params: req2}).success(success).error(error).finally(final);
