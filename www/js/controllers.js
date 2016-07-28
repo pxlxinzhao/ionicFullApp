@@ -449,6 +449,7 @@ angular.module('your_app_name.controllers', [])
                 console.log(base64Image);
                 // Then you'll be able to handle the myimage.png file as base64
                 //$loading.hide();
+                //TODO this guy is causing error
                 $toast.show("Updated successfully");
             });
         };

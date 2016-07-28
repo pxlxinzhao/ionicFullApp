@@ -8,13 +8,13 @@ angular.module('underscore', [])
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+
+//'angularMoment',
+//'ngCookies',
+//'csrf-cross-domain',
+
 angular.module('your_app_name', [
     'ionic',
-    //'angularMoment',
-    //'ngCookies',
-    //'csrf-cross-domain',
-    'your_app_name.controllers',
-    'my_controller',
     'your_app_name.directives',
     'your_app_name.filters',
     'your_app_name.services',
@@ -27,7 +27,9 @@ angular.module('your_app_name', [
     'ngCordova',
     'slugifier',
     'ionic.contrib.ui.tinderCards',
-    'youtube-embed'
+    'youtube-embed',
+    'your_app_name.controllers',
+    'my_controller'
 
 ])
 

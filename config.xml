@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.startapplabs.ionFullApp" version="1.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ionFullApp</name>
+<widget id="com.patrickpu.wechat" version="1.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Wechat</name>
     <description>
-        An Ionic Framework and Cordova project.
+        A customized chatting app for fun
     </description>
-    <author email="envato@startapplabs.com" href="http://startapplabs.com/">
-      StartApp Labs
+    <author email="pxlxinzhao@gmail.com" href="http://patrickpu.com">
+      Little Pie
     </author>
     <content src="index.html" />
     <access origin="*" subdomains="true" />
