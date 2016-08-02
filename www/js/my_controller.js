@@ -195,7 +195,7 @@ angular.module('my_controller', [])
             $httpHelper.get(
                 CHAT_SERVER_URL + '/getPhotoUrl',
                 {
-                    username: senderId,
+                    username: senderId
                 },
                 function(res) {
                     if (res.length == 1) {
