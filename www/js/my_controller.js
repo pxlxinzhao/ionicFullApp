@@ -38,47 +38,51 @@ angular.module('my_controller', [])
 
     .controller('LoginCtrl', function($httpHelper, $http, $rootScope, $scope, $state,
                                       CHAT_SERVER_URL, $toast) {
+        var u = window.localStorage.getItem("wechat-username");
+        var p = window.localStorage.getItem("wechat-password");
+
         $scope.user = {
-            username: 'Patrick Pu',
-            password: '123'
+            username: u || 'Patrick Pu',
+            password: p || '123'
         };
-        useServerValidation();
 
-        function useServerValidation() {
-            $scope.selected_tab = "";
+        $scope.selected_tab = "";
 
-            $scope.$on('my-tabs-changed', function(event, data) {
-                $scope.selected_tab = data.title;
-            });
+        $scope.$on('my-tabs-changed', function(event, data) {
+            $scope.selected_tab = data.title;
+        });
 
-            $scope.doLogIn = login;
+        $scope.doLogIn = login;
 
-            function login() {
-                console.log("login with ", $scope.user);
+        function login() {
+            console.log("login with ", $scope.user);
 
-                $httpHelper.get(
-                    CHAT_SERVER_URL + '/validateUser',
-                    $scope.user,
-                    function(res) {
-                        console.log(res);
-                        if (res.length == 1) {
-                            pass(res[0]);
-                        }else{
-                            fail();
-                        }
+            $httpHelper.get(
+                CHAT_SERVER_URL + '/validateUser',
+                $scope.user,
+                function(res) {
+                    console.log(res);
+                    if (res.length == 1) {
+                        pass(res[0]);
+                    }else{
+                        fail();
                     }
-                );
-            }
+                }
+            );
+        }
 
-            function pass(user) {
-                console.log("setting user to root: ", user);
-                $rootScope.user = user;
-                $state.go('app.wechat');
-            }
+        function pass(user) {
+            console.log("setting user to root: ", user);
+            $rootScope.user = user;
 
-            function fail(){
-                $toast.show("Wrong username or password");
-            }
+            window.localStorage.setItem("wechat-username", user.username);
+            window.localStorage.setItem("wechat-password", user.password);
+
+            $state.go('app.wechat');
+        }
+
+        function fail(){
+            $toast.show("Wrong username or password");
         }
     })
 
