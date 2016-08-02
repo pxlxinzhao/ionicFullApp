@@ -410,7 +410,7 @@ angular.module('your_app_name.controllers', [])
     })
 
 
-    .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera, $loading, $toast, $httpHelper) {
+    .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera, $loading, $toast, $httpHelper, CHAT_SERVER_URL) {
         $scope.images = [];
 
         $scope.selImages = function () {
@@ -448,15 +448,25 @@ angular.module('your_app_name.controllers', [])
                 //window.open(base64Image);
                 console.log(base64Image);
                 // Then you'll be able to handle the myimage.png file as base64
+                updatePhotoUrl(base64Image);
                 //$loading.hide();
-                //TODO this guy is causing error
-                $toast.show("Updated successfully");
             });
         };
 
         $scope.shareAll = function () {
             //window.plugins.socialsharing.share(null, null, $scope.images);
         };
+
+        function updatePhotoUrl(base64){
+            $httpHelper.get(CHAT_SERVER_URL + '/updatePhotoUrl',
+                {
+                    username: $rootScope.user.username,
+                    photoUrl: base64
+                }, function(){
+                    $toast.show('updated successfully');
+                }
+            );
+        }
 
         function getFileContentAsBase64(path,callback){
             window.resolveLocalFileSystemURL(path, gotFile, fail);
