@@ -84,22 +84,11 @@ angular.module('my_controller', [])
     })
 
     .controller('ChatCtrl', function($httpHelper, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
-        $scope.$on("$ionicView.beforeEnter", function(scopes, states) {
-            if (states.stateName == "app.chat") {
-                $rootScope.activeView = states.stateName;
-                refresh();
-            }
-        });
-        // if user does not exist, return;
+        // if user does not exist, return
         if (!$rootScope.user) return;
 
         var hasMore = true;
         var page = 1;
-
-        $scope.loadMore = function(){
-            page++;
-            refresh();
-        };
 
         var other = $stateParams.senderId;
         var me = $rootScope.user.username;
@@ -108,6 +97,19 @@ angular.module('my_controller', [])
             $rootScope.socket.on('messageSent', refresh);
             $rootScope.socket.on('receiveMessage', refresh);
         }
+
+        //refresh page when enter
+        $scope.$on("$ionicView.beforeEnter", function(scopes, states) {
+            if (states.stateName == "app.chat") {
+                $rootScope.activeView = states.stateName;
+                refresh();
+            }
+        });
+
+        $scope.loadMore = function(){
+            page++;
+            refresh();
+        };
 
         /**
          * avoid using function as ng-src
@@ -138,11 +140,9 @@ angular.module('my_controller', [])
             }
         };
 
-        //refresh();
-
         function refresh(res) {
             if (res && res.msg){
-                console.log("refresh with msg: ", res.msg, $scope.messages);
+                console.log("refresh with msg: ", res.msg);
                 $scope.messages.push(res.msg);
 
                 //listener needs to apply change
