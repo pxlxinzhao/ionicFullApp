@@ -38,9 +38,12 @@ angular.module('my_controller', [])
 
     .controller('LoginCtrl', function($httpHelper, $http, $rootScope, $scope, $state,
                                       CHAT_SERVER_URL, $toast) {
+        var u = window.localStorage.getItem("wechat-username");
+        var p = window.localStorage.getItem("wechat-password");
+
         $scope.user = {
-            username: 'Patrick Pu',
-            password: '123'
+            username: u || 'Patrick Pu',
+            password: p || '123'
         };
         useServerValidation();
 
@@ -73,8 +76,11 @@ angular.module('my_controller', [])
             function pass(user) {
                 console.log("setting user to root: ", user);
                 $rootScope.user = user;
+
+                window.localStorage.setItem("wechat-username", user.username);
+                window.localStorage.setItem("wechat-password", user.password);
+                
                 $state.go('app.wechat');
-                console.log("has gone to wechat view");
             }
 
             function fail(){
@@ -221,8 +227,6 @@ angular.module('my_controller', [])
     )
 
     .controller('WeChatCtrl', function($rootScope, $scope, db, CHAT_SERVER_URL, $http, $state, $timeout) {
-        console.log(1);
-
         $scope.doRefresh = doRefresh;
         $scope.countNewMsg = countNewMsg;
         $scope.chatters = [];
