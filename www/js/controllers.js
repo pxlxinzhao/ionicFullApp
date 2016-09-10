@@ -9,14 +9,16 @@ angular.module('your_app_name.controllers', [])
          * not handling images for now, just use default
          * @type {string}
          */
-        $rootScope.$watch("user", function(){
-            console.log($rootScope.user);
-
-            var profileUrl = $rootScope.user.username ? $rootScope.user.photoUrl : 'img/people/blank.jpg';
-            $scope.imageUrl = profileUrl;
-
-            console.log(profileUrl);
-        });
+        //$rootScope.$watch("user", function(){
+        //    console.log($rootScope.user);
+        //
+        //    if (!$rootScope.user) return;
+        //
+        //    var profileUrl = $rootScope.user.username ? $rootScope.user.photoUrl : 'img/people/blank.jpg';
+        //    $scope.imageUrl = profileUrl;
+        //
+        //    console.log(profileUrl);
+        //});
 
         if (!$rootScope || !$rootScope.user) {
             $state.go('auth.walkthrough');
@@ -207,27 +209,27 @@ angular.module('your_app_name.controllers', [])
 
         $scope.doRefresh = function () {
 
-            $http.get('feeds-categories.json').success(function (response) {
-
-                $ionicLoading.show({
-                    template: 'Loading entries...'
-                });
-
-                var category = _.find(response, {id: categoryId}),
-                    source = _.find(category.feed_sources, {id: sourceId});
-
-                $scope.sourceTitle = source.title;
-
-                FeedList.get(source.url)
-                    .then(function (result) {
-                        $scope.feed = result.feed;
-                        $ionicLoading.hide();
-                        $scope.$broadcast('scroll.refreshComplete');
-                    }, function (reason) {
-                        $ionicLoading.hide();
-                        $scope.$broadcast('scroll.refreshComplete');
-                    });
-            });
+            //$http.get('feeds-categories.json').success(function (response) {
+            //
+            //    $ionicLoading.show({
+            //        template: 'Loading entries...'
+            //    });
+            //
+            //    var category = _.find(response, {id: categoryId}),
+            //        source = _.find(category.feed_sources, {id: sourceId});
+            //
+            //    $scope.sourceTitle = source.title;
+            //
+            //    FeedList.get(source.url)
+            //        .then(function (result) {
+            //            $scope.feed = result.feed;
+            //            $ionicLoading.hide();
+            //            $scope.$broadcast('scroll.refreshComplete');
+            //        }, function (reason) {
+            //            $ionicLoading.hide();
+            //            $scope.$broadcast('scroll.refreshComplete');
+            //        });
+            //});
         };
 
         $scope.doRefresh();

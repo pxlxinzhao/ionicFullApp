@@ -74,6 +74,7 @@ angular.module('my_controller', [])
                 console.log("setting user to root: ", user);
                 $rootScope.user = user;
                 $state.go('app.wechat');
+                console.log("has gone to wechat view");
             }
 
             function fail(){
@@ -89,6 +90,8 @@ angular.module('my_controller', [])
                 refresh();
             }
         });
+        // if user does not exist, return;
+        if (!$rootScope.user) return;
 
         var hasMore = true;
         var page = 1;
@@ -135,9 +138,18 @@ angular.module('my_controller', [])
             }
         };
 
-        refresh();
+        //refresh();
 
-        function refresh() {
+        function refresh(res) {
+            if (res && res.msg){
+                console.log("refresh with msg: ", res.msg, $scope.messages);
+                $scope.messages.push(res.msg);
+
+                //listener needs to apply change
+                $scope.$apply();
+                return;
+            }
+
             if ($rootScope.activeView != "app.chat") {
                 return;
             }
@@ -162,7 +174,12 @@ angular.module('my_controller', [])
                     });
 
                     if (newMessages && newMessages.length > 0){
-                        $scope.messages = newMessages.concat($scope.messages);
+                        //$scope.messages = newMessages.concat($scope.messages);
+                        for (var i=0; i<$scope.messages.length; i++){
+                            newMessages.push($scope.messages[i]);
+                        }
+
+                        $scope.messages = newMessages;
                     }else{
                         hasMore = false;
                     }
@@ -204,6 +221,8 @@ angular.module('my_controller', [])
     )
 
     .controller('WeChatCtrl', function($rootScope, $scope, db, CHAT_SERVER_URL, $http, $state, $timeout) {
+        console.log(1);
+
         $scope.doRefresh = doRefresh;
         $scope.countNewMsg = countNewMsg;
         $scope.chatters = [];
@@ -229,6 +248,8 @@ angular.module('my_controller', [])
                 refreshCount--;
                 return;
             }
+
+            if (!$rootScope.user) return;
 
             var receiverId = $rootScope.user.username;
 
