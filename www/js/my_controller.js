@@ -89,7 +89,9 @@ angular.module('my_controller', [])
         }
     })
 
-    .controller('ChatCtrl', function($httpHelper, $rootScope, $scope, $stateParams, db, helper, CHAT_SERVER_URL) {
+    .controller('ChatCtrl', function($httpHelper, $rootScope, $scope,
+                                     $stateParams, db, helper, CHAT_SERVER_URL,
+                                     $ionicScrollDelegate) {
         // if user does not exist, return
         if (!$rootScope.user) return;
 
@@ -141,6 +143,7 @@ angular.module('my_controller', [])
                 });
 
                 $scope.message = "";
+                $ionicScrollDelegate.scrollBottom();
             } else {
                 console.error('Unable to connect to the chat server');
             }
