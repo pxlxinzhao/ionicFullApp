@@ -267,22 +267,22 @@ angular.module('your_app_name.factories', [])
     .factory('db', function() {
       return {
         chats: [{
-          name: "Mandi Gross",
+          username: "Mandi Gross",
           message: "Quisque ornare nulla eu sem convallis pellentesque. Cras at sagittis augue. Nam bibendum dui sit amet ante.",
-          url: "img/people/001.jpg"
+          photoUrl: "img/people/001.jpg"
         }, {
-          name: "Netta Nobel",
+          username: "Netta Nobel",
           message: "Donec eu nulla ut mi dignissim ornare. Curabitur maximus dui orci, quis semper mauris bibendum id. Aliquam.",
-          url: "img/people/002.jpg"
+          photoUrl: "img/people/002.jpg"
         }, {
-          name: "Kassey Kawamura",
+          username: "Kassey Kawamura",
           message: "Nullam magna tellus, iaculis hendrerit odio ac, ornare pretium libero. Donec dapibus, diam in egestas convallis, lorem.",
-          url: "img/people/003.jpg"
+          photoUrl: "img/people/003.jpg"
         }, {
-          name: "Betty Candaele",
+          username: "Betty Candaele",
           message: "Vivamus pulvinar ipsum non mauris dapibus, eget vestibulum sem lacinia. Duis porta nisl ac euismod congue. Sed turpis nisl, egestas eget sapien at, imperdiet lobortis.",
-          url: "img/people/004.jpg"
-        }, {
+          photoUrl: "img/people/004.jpg"
+        }/*, {
           name: "Perle Gannon",
           message: "Dictum feugiat consequat erat senectus primis nostra hac nec justo curabitur ante, purus interdum risus luctus nibh consectetur scelerisque nulla porta.",
           url: "img/people/005.jpg"
@@ -310,6 +310,6 @@ angular.module('your_app_name.factories', [])
           name: "Nakashima Yuko",
           message: "Nulla consequat facilisis proin sed ligula libero gravida ultrices, sollicitudin at in tincidunt eget suscipit placerat, enim sociosqu enim libero semper ac sed.",
           url: "img/people/011.jpg"
-        }]
+        }*/]
       };
     });

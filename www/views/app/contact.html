@@ -2,15 +2,15 @@
   <ion-content>
     <div class="list layouts-functionalities chats-container">
 
-      <button fab primary fab-top fab-right>
+<!--      <button fab primary fab-top fab-right>
         <ion-icon name="add"></ion-icon>
-      </button>
+      </button>-->
 
       <a ng-repeat="contact in contacts" class="item item-icon-left" ui-sref="app.chat({senderId: contact.name})">
-        <img class="wechat-user-icon" ng-src="{{contact.url}}" />
+        <img class="wechat-user-icon" ng-src="{{contact.photoUrl}}" />
         <div>
-          <span class="title">{{contact.name}}</span>
-          <p class="description">{{contact.message}}</p>
+          <span class="title">{{contact.username}}</span>
+          <p class="description">{{contact.description ? contact.description : "This guy/gal is lazy, nothing to say"}}</p>
         </div>
       </a>
         <div class="chats-place-holder"></div>

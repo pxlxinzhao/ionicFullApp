@@ -9,21 +9,15 @@ angular.module('your_app_name.controllers', [])
          * not handling images for now, just use default
          * @type {string}
          */
-        //$rootScope.$watch("user", function(){
-        //    console.log($rootScope.user);
-        //
-        //    if (!$rootScope.user) return;
-        //
-        //    var profileUrl = $rootScope.user.username ? $rootScope.user.photoUrl : 'img/people/blank.jpg';
-        //    $scope.imageUrl = profileUrl;
-        //
-        //    console.log(profileUrl);
-        //});
-
         if (!$rootScope || !$rootScope.user) {
             $state.go('auth.walkthrough');
             return;
         }
+
+        var user = $rootScope.user;
+        console.log(user);
+
+        $scope.imageUrl = user.photoUrl;
     })
 
 

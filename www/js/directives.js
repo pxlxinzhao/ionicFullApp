@@ -378,4 +378,18 @@ angular.module('your_app_name.directives', [])
 		},
 		template: '<div class="newMsg" ng-hide="{{count == 0}}">{{count}}</div>'
 	};
+})
+
+.directive('onEnter', function () {
+	return function (scope, element, attrs) {
+		element.bind("keydown keypress", function (event) {
+			if(event.which === 13) {
+				scope.$apply(function (){
+					scope.$eval(attrs.onEnter);
+				});
+
+				event.preventDefault();
+			}
+		});
+	};
 });

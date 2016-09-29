@@ -74,7 +74,7 @@ angular.module('my_controller', [])
             }
 
             function pass(user) {
-                console.log("setting user to root: ", user);
+                //console.log("setting user to root: ", user);
                 $rootScope.user = user;
 
                 window.localStorage.setItem("wechat-username", user.username);
@@ -361,10 +361,19 @@ angular.module('my_controller', [])
         }
     })
 
-    .controller('ContactCtrl', function($scope, db) {
-        $scope.contacts = _.sortBy(db.chats, function(obj) {
-            return obj.name;
-        });
+    .controller('ContactCtrl', function($scope, db, $httpHelper, CHAT_SERVER_URL) {
+        //$scope.contacts = _.sortBy(db.chats, function(obj) {
+        //    return obj.name;
+        //});
+
+        $httpHelper.get(
+            CHAT_SERVER_URL + '/listUsers',
+            {},
+            function(res) {
+                console.log(res);
+                $scope.contacts = res;
+            }
+        );
     })
 
     .controller('DiscoverCtrl', function($scope) {

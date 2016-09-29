@@ -21,7 +21,7 @@
 
             <div class="item item-input-inset">
                 <label class="item-input-wrapper">
-                    <input class="chat-message" type="text" placeholder="Message" ng-model="message">
+                    <input class="chat-message" type="text" placeholder="Message" ng-model="message" on-enter="sendMessage()">
                 </label>
                 <button class="button button-small" ng-click="sendMessage()">
                     Send
