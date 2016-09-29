@@ -34,7 +34,7 @@
   {
     // Conserve aspect ratio (see: http://stackoverflow.com/a/10441480/1116959)
     width: 100%;
-    padding-bottom: #{(nth($ratio, 2) / nth($ratio, 1)) * 100}%;
+    //padding-bottom: #{(nth($ratio, 2) / nth($ratio, 1)) * 100}%;
   }
 }
 
