@@ -328,7 +328,7 @@ angular.module('your_app_name', [
                 views: {
                     'menuContent': {
                         templateUrl: "views/app/discover.html",
-                        controller: 'DiscoverCtrl'
+                        controller: 'WordpressCtrl'
                     }
                 }
             })
