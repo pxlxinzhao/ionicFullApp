@@ -20,7 +20,7 @@ angular.module('your_app_name', [
     'your_app_name.services',
     'your_app_name.factories',
     'your_app_name.config',
-    'your_app_name.views',
+    //'your_app_name.views',
     'underscore',
     'ngMap',
     'ngResource',
