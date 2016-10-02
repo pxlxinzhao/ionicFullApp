@@ -264,6 +264,28 @@ angular.module('your_app_name.factories', [])
 
     })
 
+    .factory('soundManager', function($ionicPlatform, $timeout, $cordovaMedia){
+
+      var isIOS = ionic.Platform.isIOS();
+      var isAndroid = ionic.Platform.isAndroid();
+      var isWindowsPhone = ionic.Platform.isWindowsPhone();
+      var media;
+      var src = 'audio/are-you-kidding.mp3';
+      var androidSrc = '/android_asset/www/audio/echoed-ding.mp3';
+
+      if (isAndroid) {
+        media = $cordovaMedia.newMedia(androidSrc);
+        media.setVolume(0.2);
+      }
+      return {
+        play: function(){
+          if (isAndroid) {
+            media.play();
+          }
+        }
+      };
+    })
+
     .factory('db', function() {
       return {
         chats: [{

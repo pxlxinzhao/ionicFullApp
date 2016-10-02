@@ -94,7 +94,7 @@ angular.module('your_app_name.services', [])
 		//{
 		//	config = {
 		//		"badge": true,
-		//		"sound": true,
+		//		"audio": true,
 		//		"alert": true
 		//	};
         //
