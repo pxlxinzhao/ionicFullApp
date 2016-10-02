@@ -409,23 +409,55 @@ angular.module('your_app_name.controllers', [])
     .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera, $loading, $toast, $httpHelper, CHAT_SERVER_URL) {
         $scope.images = [];
 
-        $scope.selImages = function () {
-            window.imagePicker.getPictures(
-                function (results) {
-                    // supposed to be a loop, break the loop because of jslint
-                    var i = 0;
-                    var image = results[i];
-
-                    console.log('Image URI: ' + image);
-                    $scope.images.push(image);
-
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
+        function requestReadPermission(callback) {
+            cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+                for (var permission in statuses){
+                    switch(statuses[permission]){
+                        case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                            console.log("Permission granted to use "+permission);
+                            if (callback && typeof callback === 'function'){
+                                callback();
+                            }
+                            break;
+                        case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                            console.log("Permission to use "+permission+" has not been requested yet");
+                            break;
+                        case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                            console.log("Permission denied to use "+permission+" - ask again?");
+                            break;
+                        case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                            console.log("Permission permanently denied to use "+permission+" - guess we won't be using it then!");
+                            break;
                     }
-                }, function (error) {
-                    console.log('Error: ' + error);
                 }
-            );
+            }, function(error){
+                console.error("The following error occurred: "+error);
+            },[
+                cordova.plugins.diagnostic.runtimePermission.READ_EXTERNAL_STORAGE
+            ]);
+        }
+
+        $scope.selImages = function () {
+            requestReadPermission(getPicture);
+
+            function getPicture(){
+                window.imagePicker.getPictures(
+                    function (results) {
+                        // supposed to be a loop, break the loop because of jslint
+                        var i = 0;
+                        var image = results[i];
+
+                        console.log('Image URI: ' + image);
+                        $scope.images.push(image);
+
+                        if (!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    }, function (error) {
+                        console.log('Error: ' + error);
+                    }
+                );
+            }
         };
 
         $scope.removeImage = function (image) {
@@ -483,7 +515,6 @@ angular.module('your_app_name.controllers', [])
                 });
             }
         }
-
     })
 
     .controller('MeCtrl', function ($scope, $ionicActionSheet, $state) {
@@ -529,6 +560,5 @@ angular.module('your_app_name.controllers', [])
 
         };
     })
-
 
 ;
