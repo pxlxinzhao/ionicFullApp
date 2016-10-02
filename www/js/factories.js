@@ -285,6 +285,59 @@ angular.module('your_app_name.factories', [])
         }
       };
     })
+    
+    .factory("imageManager", function ($cordovaCamera) {
+      return {
+        pickImage: function (callback) {
+          requestReadPermission(getPicture);
+
+          function getPicture(){
+            window.imagePicker.getPictures(
+                function (results) {
+                  // supposed to be a loop, break the loop because of jslint
+                  var i = 0;
+                  var image = results[i];
+
+                  if (callback && typeof callback === 'function'){
+                    callback(image);
+                  }
+
+                }, function (error) {
+                  console.error('image picker error: ' + error);
+                }
+            );
+          }
+
+          function requestReadPermission(callback) {
+            cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses){
+              for (var permission in statuses){
+                switch(statuses[permission]){
+                  case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                    console.log("Permission granted to use "+permission);
+                    if (callback && typeof callback === 'function'){
+                      callback();
+                    }
+                    break;
+                  case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                    console.log("Permission to use "+permission+" has not been requested yet");
+                    break;
+                  case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                    console.log("Permission denied to use "+permission+" - ask again?");
+                    break;
+                  case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                    console.log("Permission permanently denied to use "+permission+" - guess we won't be using it then!");
+                    break;
+                }
+              }
+            }, function(error){
+              console.error("The following error occurred: "+error);
+            },[
+              cordova.plugins.diagnostic.runtimePermission.READ_EXTERNAL_STORAGE
+            ]);
+          }
+        }
+      };
+    })
 
     .factory('db', function() {
       return {

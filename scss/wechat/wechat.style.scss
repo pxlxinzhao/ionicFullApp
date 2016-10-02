@@ -67,6 +67,11 @@ $nav-offset-padding: 0px;
             display: inline-block;
             border-radius: 10px;
             padding: 10px;
+            max-width: 300px;
+        }
+
+        .chat-image{
+            max-width: 300px
         }
 
         &.chat-right {

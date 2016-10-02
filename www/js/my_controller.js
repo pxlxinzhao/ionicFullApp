@@ -91,7 +91,8 @@ angular.module('my_controller', [])
 
     .controller('ChatCtrl', function($httpHelper, $rootScope, $scope,
                                      $stateParams, db, helper, CHAT_SERVER_URL,
-                                     $ionicScrollDelegate, soundManager) {
+                                     $ionicScrollDelegate, soundManager, $ionicPopover,
+                                     imageManager) {
         // if user does not exist, return
         if (!$rootScope.user) return;
 
@@ -120,6 +121,33 @@ angular.module('my_controller', [])
         };
 
         /**
+         * start pop over
+         */
+
+        var popTemplate = '<button ng-click="selectImage()" style="position:absolute; bottom:50px; left:0px;">Add an image</button>';
+
+        $scope.popover = $ionicPopover.fromTemplate(popTemplate, {
+            scope: $scope
+        });
+        $scope.openPopover = function($event) {
+            $scope.popover.show($event);
+        };
+        $scope.closePopover = function() {
+            $scope.popover.hide();
+        };
+
+        $scope.selectImage = function () {
+            imageManager.pickImage(imageHandler);
+
+            function imageHandler(image){
+                //console.log('image picker: ' + image);
+                window.plugins.Base64.encodeFile(image, function(base64){
+                    //console.log('file base64 encoding: ' + base64);
+                    $scope.sendMessage(base64);
+                });
+            }
+        };
+        /**
          * avoid using function as ng-src
          * object has better functionality on $watch
          * @type {{}}
@@ -132,12 +160,31 @@ angular.module('my_controller', [])
             return message.senderId == me;
         };
 
-        $scope.sendMessage = function() {
+        //$scope.digestMessage = function (msg) {
+        //    if (msg.startsWith('data:image')){
+        //        //msg = '<img src=" ' + msg + ' "/>';
+        //        msg = "<button>This is a button</button>"
+        //    }
+        //    return msg;
+        //}
+
+        $scope.isImage = function (msg) {
+            //console.log(msg);
+            return msg.startsWith('data:image');
+        };
+
+
+        /**
+         *
+         * @param msg
+         * this param can override text message thus we can send image base64
+         */
+        $scope.sendMessage = function(msg) {
             if ($rootScope.socket) {
                 $rootScope.socket.emit('sendMessage', {
                     senderId: me,
                     receiverId: other,
-                    message: $scope.message,
+                    message: msg ? msg : $scope.message,
                     time: new Date().getTime(),
                     unread: true
                 });
@@ -345,6 +392,9 @@ angular.module('my_controller', [])
                 }
             }).success(function(res) {
                 chatter.recentMsg = res[0].message;
+                if (chatter.recentMsg && chatter.recentMsg.startsWith('data:image')){
+                    chatter.recentMsg =  'click to view the image';
+                }
                 var findChatter = false;
                 /**
                  * try to replace chatter as late as possible

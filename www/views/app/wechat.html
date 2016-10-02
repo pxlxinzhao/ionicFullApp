@@ -10,7 +10,7 @@
         <img class="wechat-user-icon" ng-src="{{chatter.photoUrl}}" />
         <div>
           <span class="title">{{chatter.username}}</span>
-          <p class="description">{{chatter.recentMsg}}</p>
+          <p class="description">{{chatter.recentMsg ? chatter.recentMsg : "click to start a conversation"}}</p>
         </div>
         <new-msg count="{{chatter.count ? chatter.count : 0}}"></new-msg>
       </a>

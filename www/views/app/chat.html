@@ -9,7 +9,8 @@
         <div ng-repeat="message in messages" ng-class="{'chat-entry': 1, 'chat-right': isRight(message)}">
             <img ng-src="{{photoUrlCache[message.senderId]}}" ng-class="{'wechat-user-icon': 1, 'chat-right': isRight(message)}"/>
             <div class="chat-chatbox-container">
-                <p class="chat-chatbox">{{message.message}}</p>
+                <p ng-if="!isImage(message.message)" class="chat-chatbox">{{message.message}}</p>
+                <img ng-if="isImage(message.message)" class="chat-image" style="max-width: 100%" data-ng-src="{{message.message}}">
             </div>
         </div>
 
@@ -21,9 +22,14 @@
         <div class="list chat-list">
 
             <div class="item item-input-inset">
+
                 <label class="item-input-wrapper">
                     <input class="chat-message" type="text" placeholder="Message" ng-model="message" on-enter="sendMessage()">
                 </label>
+
+                <ion-icon ng-click="openPopover()"
+                        class="ion-android-add-circle" style="font-size: 24px;  margin-left: 6px;"></ion-icon>
+
                 <button class="button button-small" ng-click="sendMessage()">
                     Send
                 </button>
